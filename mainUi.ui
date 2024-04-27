@@ -117,7 +117,7 @@
       <string/>
      </property>
     </widget>
-    <widget class="QLineEdit" name="ls_ms">
+    <widget class="QLineEdit" name="le_ms">
      <property name="geometry">
       <rect>
        <x>400</x>

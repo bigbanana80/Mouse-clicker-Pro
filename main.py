@@ -17,10 +17,24 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.timer = QtCore.QTimer()
 
-        self.__stop_threads = True
-        self.click_thread = threading.Thread(target=self.click_inf, args=(1, "left", 2))
-
+        # & startup tasks
         self.ui.btn_stop.setDisabled(True)
+
+        # & variables
+        self.ui.le_hours.setText("0")
+        self.ui.le_mins.setText("0")
+        self.ui.le_s.setText("0")
+        self.ui.le_ms.setText("100")
+
+        self.__stop_threads = True  # ? start and stop btns depends on this
+
+        self.update_vars()  # ? runs once to update properly
+
+        # & Connections
+        self.ui.le_hours.textChanged.connect(self.update_vars)
+        self.ui.le_mins.textChanged.connect(self.update_vars)
+        self.ui.le_s.textChanged.connect(self.update_vars)
+        self.ui.le_ms.textChanged.connect(self.update_vars)
         self.ui.btn_start.clicked.connect(self.start)
         self.ui.btn_stop.clicked.connect(self.stop)
 
@@ -38,6 +52,9 @@ class MainWindow(QMainWindow):
     def start(self):
         self.ui.btn_start.setDisabled(True)
         self.ui.btn_stop.setDisabled(False)
+        self.click_thread = threading.Thread(
+            target=self.click_inf, args=(0, "left", self.click_speed)
+        )
         self.__stop_threads = False
         self.click_thread.start()
 
@@ -47,11 +64,20 @@ class MainWindow(QMainWindow):
         self.ui.btn_start.setDisabled(False)
         self.ui.btn_stop.setDisabled(True)
 
+    def update_vars(self):
+        self.click_speed = (
+            int(self.ui.le_hours.text()) * 3600
+            + int(self.ui.le_mins.text()) * 60
+            + int(self.ui.le_s.text())
+            + int(self.ui.le_ms.text()) / 1000
+        )
+        print(self.click_speed)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     window = MainWindow()
     window.show()
-
+    print(window.click_speed)
     sys.exit(app.exec())
