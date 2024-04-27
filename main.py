@@ -27,9 +27,11 @@ class MainWindow(QMainWindow):
     def click_inf(self, hold_time, mouse_btn, delay):
         while True:
             pyautogui.mouseDown(button=mouse_btn)
-            self.timer.start(hold_time * 1000)
+            # self.timer.start(hold_time * 1000)
+            time.sleep(hold_time)
             pyautogui.mouseUp(button=mouse_btn)
-            self.timer.start(delay * 1000)
+            # self.timer.start(delay * 1000)
+            time.sleep(delay)
             if self.__stop_threads == True:
                 break
 
