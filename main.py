@@ -4,7 +4,8 @@ import time
 import random
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QFile
+from PySide6.QtCore import QFile, Qt, QTranslator
+
 from mainUi import Ui_main_window
 import threading
 
@@ -26,6 +27,11 @@ class MainWindow(QMainWindow):
         self.ui.le_s.setText("0")
         self.ui.le_ms.setText("100")
 
+        self.ui.le_hours.setDisabled(True)
+        self.ui.le_mins.setDisabled(True)
+        self.ui.le_s.setDisabled(True)
+        self.ui.le_ms.setDisabled(True)
+
         self.__stop_threads = True  # ? start and stop btns depends on this
 
         self.update_vars()  # ? runs once to update properly
@@ -37,6 +43,13 @@ class MainWindow(QMainWindow):
         self.ui.le_ms.textChanged.connect(self.update_vars)
         self.ui.btn_start.clicked.connect(self.start)
         self.ui.btn_stop.clicked.connect(self.stop)
+
+        shortcut = QtGui.QKeySequence(QTranslator.tr("Ctrl+B"))
+        start_shortcut = QtGui.QShortcut(shortcut, self.ui.btn_start)
+        start_shortcut.activated.connect(self.start)
+
+        stop_shortcut = QtGui.QShortcut(shortcut, self.ui.btn_stop)
+        stop_shortcut.activated.connect(self.stop)
 
     def click_inf(self, hold_time, mouse_btn, delay):
         while True:
@@ -71,7 +84,6 @@ class MainWindow(QMainWindow):
             + int(self.ui.le_s.text())
             + int(self.ui.le_ms.text()) / 1000
         )
-        print(self.click_speed)
 
 
 if __name__ == "__main__":
@@ -79,5 +91,5 @@ if __name__ == "__main__":
 
     window = MainWindow()
     window.show()
-    print(window.click_speed)
+
     sys.exit(app.exec())
