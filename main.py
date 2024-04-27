@@ -46,10 +46,10 @@ class MainWindow(QMainWindow):
 
         shortcut = QtGui.QKeySequence(QTranslator.tr("Ctrl+B"))
         start_shortcut = QtGui.QShortcut(shortcut, self.ui.btn_start)
-        start_shortcut.activated.connect(self.start)
+        start_shortcut.activated.connect(self.ui.btn_start.click)
 
         stop_shortcut = QtGui.QShortcut(shortcut, self.ui.btn_stop)
-        stop_shortcut.activated.connect(self.stop)
+        stop_shortcut.activated.connect(self.ui.btn_stop.click)
 
     def click_inf(self, hold_time, mouse_btn, delay):
         while True:
