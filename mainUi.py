@@ -24,6 +24,12 @@ class Ui_main_window(object):
         if not main_window.objectName():
             main_window.setObjectName(u"main_window")
         main_window.resize(601, 583)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(main_window.sizePolicy().hasHeightForWidth())
+        main_window.setSizePolicy(sizePolicy)
+        main_window.setFocusPolicy(Qt.NoFocus)
         self.central_widget = QWidget(main_window)
         self.central_widget.setObjectName(u"central_widget")
         self.grb_clk_interval = QGroupBox(self.central_widget)
@@ -83,7 +89,7 @@ class Ui_main_window(object):
     # setupUi
 
     def retranslateUi(self, main_window):
-        main_window.setWindowTitle(QCoreApplication.translate("main_window", u"MainWindow", None))
+        main_window.setWindowTitle(QCoreApplication.translate("main_window", u"Auto Clicker Pro", None))
         self.grb_clk_interval.setTitle(QCoreApplication.translate("main_window", u"Click interval", None))
         self.label.setText(QCoreApplication.translate("main_window", u"Hours", None))
         self.label_2.setText(QCoreApplication.translate("main_window", u"mins", None))

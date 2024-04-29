@@ -8,6 +8,7 @@ from PySide6.QtCore import QFile, Qt, QTranslator
 
 from mainUi import Ui_main_window
 import threading
+import keyboard
 
 
 class MainWindow(QMainWindow):
@@ -44,12 +45,26 @@ class MainWindow(QMainWindow):
         self.ui.btn_start.clicked.connect(self.start)
         self.ui.btn_stop.clicked.connect(self.stop)
 
+        # ? Qshortcut is dogshit and doesnt work for my usecase
+        """  
         shortcut = QtGui.QKeySequence(QTranslator.tr("Ctrl+B"))
-        start_shortcut = QtGui.QShortcut(shortcut, self.ui.btn_start)
+        start_shortcut = QtGui.QShortcut(shortcut, self)
         start_shortcut.activated.connect(self.ui.btn_start.click)
 
-        stop_shortcut = QtGui.QShortcut(shortcut, self.ui.btn_stop)
+        stop_shortcut = QtGui.QShortcut(shortcut, self)
         stop_shortcut.activated.connect(self.ui.btn_stop.click)
+        self.shortcut_thread = threading.Thread(target=self.shortcut_func)
+        self.shortcut_thread.start()
+        
+        """
+        self.shortcut_start_stop = "F6"
+        keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
+
+    def shortcut_func(self):
+        if self.__stop_threads:
+            self.start()
+        else:
+            self.stop()
 
     def click_inf(self, hold_time, mouse_btn, delay):
         while True:
