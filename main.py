@@ -1,4 +1,3 @@
-import pyautogui
 import sys
 import time
 import random
@@ -71,11 +70,9 @@ class MainWindow(QMainWindow):
 
     def click_inf(self, hold_time, mouse_btn, delay):
         while True:
-            pyautogui.mouseDown(button=mouse_btn)
-            # self.timer.start(hold_time * 1000)
+            ctypes.windll.user32.mouse_event(2, 0, 0, 0, 0)  # left down
             time.sleep(hold_time)
-            pyautogui.mouseUp(button=mouse_btn)
-            # self.timer.start(delay * 1000)
+            ctypes.windll.user32.mouse_event(4, 0, 0, 0, 0)
             time.sleep(delay)
             if self.__stop_threads == True:
                 break
