@@ -9,6 +9,7 @@ from PySide6.QtCore import QFile, Qt, QTranslator
 from mainUi import Ui_main_window
 import threading
 import keyboard
+import ctypes
 
 
 class MainWindow(QMainWindow):
@@ -28,10 +29,12 @@ class MainWindow(QMainWindow):
         self.ui.le_s.setText("0")
         self.ui.le_ms.setText("100")
 
+        """        
         self.ui.le_hours.setDisabled(True)
         self.ui.le_mins.setDisabled(True)
         self.ui.le_s.setDisabled(True)
         self.ui.le_ms.setDisabled(True)
+        """  # ? might need to add lock and unlock functions
 
         self.__stop_threads = True  # ? start and stop btns depends on this
 
