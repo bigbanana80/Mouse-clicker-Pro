@@ -24,7 +24,7 @@ class Ui_main_window(object):
     def setupUi(self, main_window):
         if not main_window.objectName():
             main_window.setObjectName(u"main_window")
-        main_window.resize(598, 583)
+        main_window.resize(591, 654)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -79,7 +79,7 @@ class Ui_main_window(object):
 
         self.grb_clk_settings = QGroupBox(self.central_widget)
         self.grb_clk_settings.setObjectName(u"grb_clk_settings")
-        self.grb_clk_settings.setGeometry(QRect(10, 90, 271, 161))
+        self.grb_clk_settings.setGeometry(QRect(10, 170, 271, 161))
         self.gridLayout = QGridLayout(self.grb_clk_settings)
         self.gridLayout.setObjectName(u"gridLayout")
         self.label_5 = QLabel(self.grb_clk_settings)
@@ -111,7 +111,7 @@ class Ui_main_window(object):
 
         self.grb_cur_pos = QGroupBox(self.central_widget)
         self.grb_cur_pos.setObjectName(u"grb_cur_pos")
-        self.grb_cur_pos.setGeometry(QRect(290, 250, 291, 121))
+        self.grb_cur_pos.setGeometry(QRect(290, 330, 291, 121))
         self.gridLayout_3 = QGridLayout(self.grb_cur_pos)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.pos_opt_1 = QRadioButton(self.grb_cur_pos)
@@ -147,13 +147,13 @@ class Ui_main_window(object):
 
         self.btn_start = QPushButton(self.central_widget)
         self.btn_start.setObjectName(u"btn_start")
-        self.btn_start.setGeometry(QRect(140, 380, 141, 51))
+        self.btn_start.setGeometry(QRect(140, 460, 141, 51))
         self.btn_stop = QPushButton(self.central_widget)
         self.btn_stop.setObjectName(u"btn_stop")
-        self.btn_stop.setGeometry(QRect(290, 380, 141, 51))
+        self.btn_stop.setGeometry(QRect(290, 460, 141, 51))
         self.grb_clk_repeat = QGroupBox(self.central_widget)
         self.grb_clk_repeat.setObjectName(u"grb_clk_repeat")
-        self.grb_clk_repeat.setGeometry(QRect(10, 250, 271, 121))
+        self.grb_clk_repeat.setGeometry(QRect(10, 330, 271, 121))
         self.gridLayout_4 = QGridLayout(self.grb_clk_repeat)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.repeat_opt_1 = QRadioButton(self.grb_clk_repeat)
@@ -174,7 +174,7 @@ class Ui_main_window(object):
 
         self.grb_clk_timer = QGroupBox(self.central_widget)
         self.grb_clk_timer.setObjectName(u"grb_clk_timer")
-        self.grb_clk_timer.setGeometry(QRect(290, 90, 291, 161))
+        self.grb_clk_timer.setGeometry(QRect(290, 170, 291, 161))
         self.gridLayout_2 = QGridLayout(self.grb_clk_timer)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.label_9 = QLabel(self.grb_clk_timer)
@@ -217,10 +217,55 @@ class Ui_main_window(object):
 
         self.gridLayout_2.addWidget(self.le_timer_ms, 1, 3, 1, 1)
 
+        self.grb_clk_interval_2 = QGroupBox(self.central_widget)
+        self.grb_clk_interval_2.setObjectName(u"grb_clk_interval_2")
+        self.grb_clk_interval_2.setGeometry(QRect(10, 90, 571, 81))
+        self.gridLayout_6 = QGridLayout(self.grb_clk_interval_2)
+        self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.le_hold_hours = QLineEdit(self.grb_clk_interval_2)
+        self.le_hold_hours.setObjectName(u"le_hold_hours")
+
+        self.gridLayout_6.addWidget(self.le_hold_hours, 0, 0, 1, 1)
+
+        self.label_13 = QLabel(self.grb_clk_interval_2)
+        self.label_13.setObjectName(u"label_13")
+
+        self.gridLayout_6.addWidget(self.label_13, 0, 1, 1, 1)
+
+        self.le_hold_mins = QLineEdit(self.grb_clk_interval_2)
+        self.le_hold_mins.setObjectName(u"le_hold_mins")
+
+        self.gridLayout_6.addWidget(self.le_hold_mins, 0, 2, 1, 1)
+
+        self.label_14 = QLabel(self.grb_clk_interval_2)
+        self.label_14.setObjectName(u"label_14")
+
+        self.gridLayout_6.addWidget(self.label_14, 0, 3, 1, 1)
+
+        self.le_hold_s = QLineEdit(self.grb_clk_interval_2)
+        self.le_hold_s.setObjectName(u"le_hold_s")
+
+        self.gridLayout_6.addWidget(self.le_hold_s, 0, 4, 1, 1)
+
+        self.label_15 = QLabel(self.grb_clk_interval_2)
+        self.label_15.setObjectName(u"label_15")
+
+        self.gridLayout_6.addWidget(self.label_15, 0, 5, 1, 1)
+
+        self.le_hold_ms = QLineEdit(self.grb_clk_interval_2)
+        self.le_hold_ms.setObjectName(u"le_hold_ms")
+
+        self.gridLayout_6.addWidget(self.le_hold_ms, 0, 6, 1, 1)
+
+        self.label_16 = QLabel(self.grb_clk_interval_2)
+        self.label_16.setObjectName(u"label_16")
+
+        self.gridLayout_6.addWidget(self.label_16, 0, 7, 1, 1)
+
         main_window.setCentralWidget(self.central_widget)
         self.menu_bar = QMenuBar(main_window)
         self.menu_bar.setObjectName(u"menu_bar")
-        self.menu_bar.setGeometry(QRect(0, 0, 598, 22))
+        self.menu_bar.setGeometry(QRect(0, 0, 591, 22))
         main_window.setMenuBar(self.menu_bar)
         self.statusBar = QStatusBar(main_window)
         self.statusBar.setObjectName(u"statusBar")
@@ -302,5 +347,20 @@ class Ui_main_window(object):
         self.label_7.setText(QCoreApplication.translate("main_window", u"min", None))
         self.label_10.setText(QCoreApplication.translate("main_window", u"seconds", None))
         self.label_8.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
+#if QT_CONFIG(tooltip)
+        self.grb_clk_interval_2.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Controls how long the mouse will hold to button as if it didnt let go of the click before releasing it. ( some games could use this function)</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(whatsthis)
+        self.grb_clk_interval_2.setWhatsThis(QCoreApplication.translate("main_window", u"<html><head/><body><p><br/></p></body></html>", None))
+#endif // QT_CONFIG(whatsthis)
+        self.grb_clk_interval_2.setTitle(QCoreApplication.translate("main_window", u"Click hold time", None))
+        self.le_hold_hours.setText("")
+        self.label_13.setText(QCoreApplication.translate("main_window", u"Hours", None))
+        self.le_hold_mins.setText("")
+        self.label_14.setText(QCoreApplication.translate("main_window", u"mins", None))
+        self.le_hold_s.setText("")
+        self.label_15.setText(QCoreApplication.translate("main_window", u"seconds", None))
+        self.le_hold_ms.setText("")
+        self.label_16.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
     # retranslateUi
 

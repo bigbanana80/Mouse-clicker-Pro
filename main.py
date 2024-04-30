@@ -44,6 +44,11 @@ class MainWindow(QMainWindow):
         self.ui.le_timer_s.setText("0")
         self.ui.le_timer_ms.setText("0")
 
+        self.ui.le_hold_hours.setText("0")
+        self.ui.le_hold_mins.setText("0")
+        self.ui.le_hold_s.setText("0")
+        self.ui.le_hold_ms.setText("0")
+
         """        
         self.ui.le_hours.setDisabled(True)
         self.ui.le_mins.setDisabled(True)
@@ -65,6 +70,11 @@ class MainWindow(QMainWindow):
         self.ui.le_timer_min.textChanged.connect(self.update_vars)
         self.ui.le_timer_s.textChanged.connect(self.update_vars)
         self.ui.le_timer_ms.textChanged.connect(self.update_vars)
+
+        self.ui.le_hold_hours.textChanged.connect(self.update_vars)
+        self.ui.le_hold_mins.textChanged.connect(self.update_vars)
+        self.ui.le_hold_s.textChanged.connect(self.update_vars)
+        self.ui.le_hold_ms.textChanged.connect(self.update_vars)
 
         self.ui.btn_start.clicked.connect(self.start)
         self.ui.btn_stop.clicked.connect(self.stop)
@@ -90,7 +100,7 @@ class MainWindow(QMainWindow):
         else:
             self.stop()
 
-    def click_inf(self, hold_time, mouse_btn, delay, timer):
+    def click_inf(self, hold_time, delay, timer):
         if self.ui.comboB_mouse_btn.currentText() == "Left":
             down = self.MOUSEEVENTF_LEFTDOWN
             up = self.MOUSEEVENTF_LEFTUP
@@ -110,9 +120,9 @@ class MainWindow(QMainWindow):
                 if self.__stop_threads == True:
                     return
         else:
-            self.click_with_time(hold_time, delay, timer, up, down)
+            self.click_with_time(hold_time, delay, up, down)
 
-    def click_with_time(self, hold_time, delay, timer, up, down):
+    def click_with_time(self, hold_time, delay, up, down):
         self.thread_timer = threading.Thread(target=self.timer_countdown)
         self.thread_timer.start()
         while True:
@@ -134,7 +144,8 @@ class MainWindow(QMainWindow):
         self.ui.btn_start.setDisabled(True)
         self.ui.btn_stop.setDisabled(False)
         self.click_thread = threading.Thread(
-            target=self.click_inf, args=(0, "left", self.click_speed, self.click_timer)
+            target=self.click_inf,
+            args=(self.click_hold, self.click_speed, self.click_timer),
         )
         self.__stop_threads = False
         self.click_thread.start()
@@ -157,6 +168,12 @@ class MainWindow(QMainWindow):
             + int(self.ui.le_timer_min.text()) * 60
             + int(self.ui.le_timer_s.text())
             + int(self.ui.le_timer_ms.text()) / 1000
+        )
+        self.click_hold = (
+            int(self.ui.le_hold_hours.text()) * 3600
+            + int(self.ui.le_hold_mins.text()) * 60
+            + int(self.ui.le_hold_s.text())
+            + int(self.ui.le_hold_ms.text()) / 1000
         )
 
 
