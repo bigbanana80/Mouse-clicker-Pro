@@ -20,8 +20,8 @@ class MainWindow(QMainWindow):
         self.timer = QtCore.QTimer()
 
         # & startup tasks
-        self.ui.btn_stop.setDisabled(True)
-
+        # self.ui.btn_stop.setDisabled(True) i refactored it, will keep this block of code for now
+        # self.ui.repeat_times.setDisabled(True)
         # & variables
 
         self.MOUSEEVENTF_MOVE = 0x0001  # mouse move
@@ -49,6 +49,8 @@ class MainWindow(QMainWindow):
         self.ui.le_hold_s.setText("0")
         self.ui.le_hold_ms.setText("0")
 
+        self.ui.repeat_times.setValue(0)
+
         """        
         self.ui.le_hours.setDisabled(True)
         self.ui.le_mins.setDisabled(True)
@@ -75,6 +77,11 @@ class MainWindow(QMainWindow):
         self.ui.le_hold_mins.textChanged.connect(self.update_vars)
         self.ui.le_hold_s.textChanged.connect(self.update_vars)
         self.ui.le_hold_ms.textChanged.connect(self.update_vars)
+
+        self.ui.repeat_times.valueChanged.connect(self.update_vars)
+
+        self.ui.repeat_opt_1.clicked.connect(self.repeat_opt)
+        self.ui.repeat_opt_2.clicked.connect(self.repeat_opt)
 
         self.ui.btn_start.clicked.connect(self.start)
         self.ui.btn_stop.clicked.connect(self.stop)
@@ -111,7 +118,7 @@ class MainWindow(QMainWindow):
             down = self.MOUSEEVENTF_MIDDLEDOWN
             up = self.MOUSEEVENTF_MIDDLEUP
 
-        if timer == 0:
+        if timer == 0 and self.click_repeat == 0:
             while True:
                 ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
                 time.sleep(hold_time)
@@ -120,20 +127,37 @@ class MainWindow(QMainWindow):
                 if self.__stop_threads == True:
                     return
         else:
-            self.click_with_time(hold_time, delay, up, down)
+            self.click_with_options(hold_time, delay, up, down)
 
-    def click_with_time(self, hold_time, delay, up, down):
-        self.thread_timer = threading.Thread(target=self.timer_countdown)
-        self.thread_timer.start()
-        while True:
-            ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
-            time.sleep(hold_time)
-            ctypes.windll.user32.mouse_event(up, 0, 0, 0, 0)
-            time.sleep(delay)
-            if self.__stop_threads == True:
-                self.ui.btn_start.setDisabled(False)
-                self.ui.btn_stop.setDisabled(True)
-                return
+    def click_with_options(self, hold_time, delay, up, down):
+        temp = self.click_repeat
+        if self.click_timer > 0 and self.click_repeat > 0:
+            self.thread_timer = threading.Thread(target=self.timer_countdown)
+            self.thread_timer.start()
+            while True:
+                ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
+                time.sleep(hold_time)
+                ctypes.windll.user32.mouse_event(up, 0, 0, 0, 0)
+                temp -= 1
+                time.sleep(delay)
+                if self.__stop_threads == True or temp == 0:
+                    self.__stop_threads = True
+                    self.thread_timer.join(0.1)
+                    self.ui.btn_start.setDisabled(False)
+                    self.ui.btn_stop.setDisabled(True)
+                    return
+        else:
+            while True:
+                ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
+                time.sleep(hold_time)
+                ctypes.windll.user32.mouse_event(up, 0, 0, 0, 0)
+                temp -= 1
+                time.sleep(delay)
+                if self.__stop_threads == True or temp == 0:
+                    self.__stop_threads = True
+                    self.ui.btn_start.setDisabled(False)
+                    self.ui.btn_stop.setDisabled(True)
+                    return
 
     def timer_countdown(self):
         temp = self.click_timer
@@ -175,6 +199,13 @@ class MainWindow(QMainWindow):
             + int(self.ui.le_hold_s.text())
             + int(self.ui.le_hold_ms.text()) / 1000
         )
+        self.click_repeat = abs(int(self.ui.repeat_times.text()))
+
+    def repeat_opt(self):
+        if self.ui.repeat_opt_1.isChecked():
+            self.ui.repeat_times.setEnabled(True)
+        else:
+            self.ui.repeat_times.setEnabled(False)
 
 
 if __name__ == "__main__":

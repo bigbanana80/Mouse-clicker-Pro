@@ -259,6 +259,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
    </widget>
    <widget class="QPushButton" name="btn_stop">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -298,7 +301,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="repeat_times"/>
+      <widget class="QSpinBox" name="repeat_times">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0" colspan="2">
       <widget class="QRadioButton" name="repeat_opt_2">

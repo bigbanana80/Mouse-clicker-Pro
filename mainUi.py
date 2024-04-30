@@ -150,6 +150,7 @@ class Ui_main_window(object):
         self.btn_start.setGeometry(QRect(140, 460, 141, 51))
         self.btn_stop = QPushButton(self.central_widget)
         self.btn_stop.setObjectName(u"btn_stop")
+        self.btn_stop.setEnabled(False)
         self.btn_stop.setGeometry(QRect(290, 460, 141, 51))
         self.grb_clk_repeat = QGroupBox(self.central_widget)
         self.grb_clk_repeat.setObjectName(u"grb_clk_repeat")
@@ -163,6 +164,7 @@ class Ui_main_window(object):
 
         self.repeat_times = QSpinBox(self.grb_clk_repeat)
         self.repeat_times.setObjectName(u"repeat_times")
+        self.repeat_times.setEnabled(False)
 
         self.gridLayout_4.addWidget(self.repeat_times, 0, 1, 1, 1)
 
