@@ -23,6 +23,17 @@ class MainWindow(QMainWindow):
         self.ui.btn_stop.setDisabled(True)
 
         # & variables
+
+        self.MOUSEEVENTF_MOVE = 0x0001  # mouse move
+        self.MOUSEEVENTF_LEFTDOWN = 0x0002  # left button down
+        self.MOUSEEVENTF_LEFTUP = 0x0004  # left button up
+        self.MOUSEEVENTF_RIGHTDOWN = 0x0008  # right button down
+        self.MOUSEEVENTF_RIGHTUP = 0x0010  # right button up
+        self.MOUSEEVENTF_MIDDLEDOWN = 0x0020  # middle button down
+        self.MOUSEEVENTF_MIDDLEUP = 0x0040  # middle button up
+        self.MOUSEEVENTF_WHEEL = 0x0800  # wheel button rolled
+        self.MOUSEEVENTF_ABSOLUTE = 0x8000  # absolute move
+
         self.ui.le_hours.setText("0")
         self.ui.le_mins.setText("0")
         self.ui.le_s.setText("0")
@@ -69,10 +80,19 @@ class MainWindow(QMainWindow):
             self.stop()
 
     def click_inf(self, hold_time, mouse_btn, delay):
+        if self.ui.comboB_mouse_btn.currentText() == "Left":
+            down = self.MOUSEEVENTF_LEFTDOWN
+            up = self.MOUSEEVENTF_LEFTUP
+        elif self.ui.comboB_mouse_btn.currentText() == "Right":
+            down = self.MOUSEEVENTF_RIGHTDOWN
+            up = self.MOUSEEVENTF_RIGHTUP
+        elif self.ui.comboB_mouse_btn.currentText() == "Middle":
+            down = self.MOUSEEVENTF_MIDDLEDOWN
+            up = self.MOUSEEVENTF_MIDDLEUP
         while True:
-            ctypes.windll.user32.mouse_event(2, 0, 0, 0, 0)  # left down
+            ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
             time.sleep(hold_time)
-            ctypes.windll.user32.mouse_event(4, 0, 0, 0, 0)
+            ctypes.windll.user32.mouse_event(up, 1, 0, 0, 0)
             time.sleep(delay)
             if self.__stop_threads == True:
                 break
