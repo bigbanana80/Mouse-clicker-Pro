@@ -11,8 +11,10 @@ from mainUi import Ui_main_window
 import threading
 import keyboard
 import ctypes
+from unittest.mock import patch
 
-import pyautogui
+with patch("ctypes.windll.user32.SetProcessDPIAware", autospec=True):
+    import pyautogui
 
 
 class MainWindow(QMainWindow):
