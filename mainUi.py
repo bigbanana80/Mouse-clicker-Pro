@@ -129,20 +129,20 @@ class Ui_main_window(object):
 
         self.gridLayout_3.addWidget(self.label_11, 1, 1, 1, 1)
 
-        self.lineEdit = QLineEdit(self.grb_cur_pos)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.x_cor = QLineEdit(self.grb_cur_pos)
+        self.x_cor.setObjectName(u"x_cor")
 
-        self.gridLayout_3.addWidget(self.lineEdit, 1, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.x_cor, 1, 2, 1, 1)
 
         self.label_12 = QLabel(self.grb_cur_pos)
         self.label_12.setObjectName(u"label_12")
 
         self.gridLayout_3.addWidget(self.label_12, 1, 3, 1, 1)
 
-        self.lineEdit_2 = QLineEdit(self.grb_cur_pos)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        self.y_cor = QLineEdit(self.grb_cur_pos)
+        self.y_cor.setObjectName(u"y_cor")
 
-        self.gridLayout_3.addWidget(self.lineEdit_2, 1, 4, 1, 1)
+        self.gridLayout_3.addWidget(self.y_cor, 1, 4, 1, 1)
 
         self.btn_start = QPushButton(self.central_widget)
         self.btn_start.setObjectName(u"btn_start")
@@ -164,6 +164,7 @@ class Ui_main_window(object):
         self.repeat_times = QSpinBox(self.grb_clk_repeat)
         self.repeat_times.setObjectName(u"repeat_times")
         self.repeat_times.setEnabled(False)
+        self.repeat_times.setValue(0)
 
         self.gridLayout_4.addWidget(self.repeat_times, 0, 1, 1, 1)
 
@@ -286,13 +287,13 @@ class Ui_main_window(object):
         self.grb_clk_interval.setWhatsThis(QCoreApplication.translate("main_window", u"<html><head/><body><p>Control how fast the auto clicker works. ( 100 milliseconds is the default speed which is 10 clicks per seconds)</p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
         self.grb_clk_interval.setTitle(QCoreApplication.translate("main_window", u"Click interval", None))
-        self.le_hours.setText("")
+        self.le_hours.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label.setText(QCoreApplication.translate("main_window", u"Hours", None))
-        self.le_mins.setText("")
+        self.le_mins.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_2.setText(QCoreApplication.translate("main_window", u"mins", None))
-        self.le_s.setText("")
+        self.le_s.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_3.setText(QCoreApplication.translate("main_window", u"seconds", None))
-        self.le_ms.setText("")
+        self.le_ms.setText(QCoreApplication.translate("main_window", u"100", None))
         self.label_4.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
 #if QT_CONFIG(tooltip)
         self.grb_clk_settings.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Controls the click type and the mouse button that will perform the click.</p></body></html>", None))
@@ -309,6 +310,9 @@ class Ui_main_window(object):
         self.comboB_clickType.setItemText(2, QCoreApplication.translate("main_window", u"Triple", None))
 
 #if QT_CONFIG(tooltip)
+        self.comboB_clickType.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Single :  Click once</p><p>Double : Clicks twice ( same as double click)</p><p>Triple: Click three times </p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
         self.grb_cur_pos.setToolTip(QCoreApplication.translate("main_window", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -322,9 +326,9 @@ class Ui_main_window(object):
         self.pos_opt_1.setText(QCoreApplication.translate("main_window", u"Current position (default)", None))
         self.pos_opt_2.setText(QCoreApplication.translate("main_window", u"Pick position :", None))
         self.label_11.setText(QCoreApplication.translate("main_window", u"X :", None))
-        self.lineEdit.setText("")
+        self.x_cor.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_12.setText(QCoreApplication.translate("main_window", u"Y :", None))
-        self.lineEdit_2.setText("")
+        self.y_cor.setText(QCoreApplication.translate("main_window", u"0", None))
 #if QT_CONFIG(tooltip)
         self.btn_start.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Starts the auto clicker. (default shortcut is F6)</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
@@ -344,9 +348,13 @@ class Ui_main_window(object):
 #endif // QT_CONFIG(tooltip)
         self.grb_clk_timer.setTitle(QCoreApplication.translate("main_window", u"Click Timer", None))
         self.label_9.setText(QCoreApplication.translate("main_window", u"Hours", None))
+        self.le_timer_h.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_7.setText(QCoreApplication.translate("main_window", u"min", None))
+        self.le_timer_min.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_10.setText(QCoreApplication.translate("main_window", u"seconds", None))
+        self.le_timer_s.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_8.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
+        self.le_timer_ms.setText(QCoreApplication.translate("main_window", u"0", None))
 #if QT_CONFIG(tooltip)
         self.grb_clk_interval_2.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Controls how long the mouse will hold to button as if it didnt let go of the click before releasing it. ( some games could use this function)</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
@@ -354,13 +362,13 @@ class Ui_main_window(object):
         self.grb_clk_interval_2.setWhatsThis(QCoreApplication.translate("main_window", u"<html><head/><body><p><br/></p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
         self.grb_clk_interval_2.setTitle(QCoreApplication.translate("main_window", u"Click hold time", None))
-        self.le_hold_hours.setText("")
+        self.le_hold_hours.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_13.setText(QCoreApplication.translate("main_window", u"Hours", None))
-        self.le_hold_mins.setText("")
+        self.le_hold_mins.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_14.setText(QCoreApplication.translate("main_window", u"mins", None))
-        self.le_hold_s.setText("")
+        self.le_hold_s.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_15.setText(QCoreApplication.translate("main_window", u"seconds", None))
-        self.le_hold_ms.setText("")
+        self.le_hold_ms.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_16.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
     # retranslateUi
 

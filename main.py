@@ -1,3 +1,4 @@
+import multiprocessing.process
 import sys
 import time
 import random
@@ -128,30 +129,24 @@ class MainWindow(QMainWindow):
             self.click_with_options(hold_time, delay, up, down)
 
     def click_with_options(self, hold_time, delay, up, down):
-        temp = self.click_repeat
-        if self.click_timer > 0 and self.click_repeat > 0:
+        if self.click_repeat > 0:
+            temp = self.click_repeat
+        else:
+            temp = -1
+        if self.click_timer > 0:
             self.thread_timer = threading.Thread(target=self.timer_countdown)
             self.thread_timer.start()
-            while True:
-                self.click(hold_time, up, down)
-                temp -= 1
-                time.sleep(delay)
-                if self.__stop_threads == True or temp == 0:
-                    self.__stop_threads = True
-                    self.thread_timer.join(0.1)
-                    self.ui.btn_start.setDisabled(False)
-                    self.ui.btn_stop.setDisabled(True)
-                    return
-        else:
-            while True:
-                self.click(hold_time, up, down)
-                temp -= 1
-                time.sleep(delay)
-                if self.__stop_threads == True or temp == 0:
-                    self.__stop_threads = True
-                    self.ui.btn_start.setDisabled(False)
-                    self.ui.btn_stop.setDisabled(True)
-                    return
+        while True:
+            self.click(hold_time, up, down)
+            temp -= 1
+            time.sleep(delay)
+            if self.__stop_threads == True or temp == 0:
+                self.__stop_threads = True
+                if self.thread_timer.is_alive():
+                    self.thread_timer.join(0.2)
+                self.ui.btn_start.setDisabled(False)
+                self.ui.btn_stop.setDisabled(True)
+                return
 
     def click(self, hold_time, up, down):
         temp = self.click_type[self.ui.comboB_clickType.currentText()]
@@ -211,6 +206,7 @@ class MainWindow(QMainWindow):
             self.ui.repeat_times.setEnabled(True)
         else:
             self.ui.repeat_times.setEnabled(False)
+            self.ui.repeat_times.setValue(0)
 
 
 if __name__ == "__main__":
