@@ -2,6 +2,7 @@ import multiprocessing.process
 import sys
 import time
 import random
+
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QFile, Qt, QTranslator
@@ -10,6 +11,8 @@ from mainUi import Ui_main_window
 import threading
 import keyboard
 import ctypes
+
+import pyautogui
 
 
 class MainWindow(QMainWindow):
@@ -84,6 +87,9 @@ class MainWindow(QMainWindow):
         self.ui.repeat_opt_1.clicked.connect(self.repeat_opt)
         self.ui.repeat_opt_2.clicked.connect(self.repeat_opt)
 
+        self.ui.pos_opt_1.clicked.connect(self.pos_opt)
+        self.ui.pos_opt_2.clicked.connect(self.pos_opt)
+
         self.ui.btn_start.clicked.connect(self.start)
         self.ui.btn_stop.clicked.connect(self.stop)
 
@@ -118,7 +124,13 @@ class MainWindow(QMainWindow):
         elif self.ui.comboB_mouse_btn.currentText() == "Middle":
             down = self.MOUSEEVENTF_MIDDLEDOWN
             up = self.MOUSEEVENTF_MIDDLEUP
-
+        if self.ui.pos_opt_2.isChecked():
+            x = int(self.ui.x_cor.text())
+            y = int(self.ui.y_cor.text())
+            pyautogui.moveTo(x, y)
+        else:
+            x = 0
+            y = 0
         if timer == 0 and self.click_repeat == 0:
             while True:
                 self.click(hold_time, up, down)
@@ -207,6 +219,14 @@ class MainWindow(QMainWindow):
         else:
             self.ui.repeat_times.setEnabled(False)
             self.ui.repeat_times.setValue(0)
+
+    def pos_opt(self):
+        if self.ui.pos_opt_2.isChecked():
+            self.ui.x_cor.setEnabled(True)
+            self.ui.y_cor.setEnabled(True)
+        else:
+            self.ui.x_cor.setEnabled(False)
+            self.ui.y_cor.setEnabled(False)
 
 
 if __name__ == "__main__":

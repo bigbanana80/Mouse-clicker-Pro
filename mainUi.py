@@ -131,6 +131,7 @@ class Ui_main_window(object):
 
         self.x_cor = QLineEdit(self.grb_cur_pos)
         self.x_cor.setObjectName(u"x_cor")
+        self.x_cor.setEnabled(False)
 
         self.gridLayout_3.addWidget(self.x_cor, 1, 2, 1, 1)
 
@@ -141,6 +142,7 @@ class Ui_main_window(object):
 
         self.y_cor = QLineEdit(self.grb_cur_pos)
         self.y_cor.setObjectName(u"y_cor")
+        self.y_cor.setEnabled(False)
 
         self.gridLayout_3.addWidget(self.y_cor, 1, 4, 1, 1)
 

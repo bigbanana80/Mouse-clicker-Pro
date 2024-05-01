@@ -219,6 +219,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </item>
      <item row="1" column="2">
       <widget class="QLineEdit" name="x_cor">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>0</string>
        </property>
@@ -233,6 +236,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </item>
      <item row="1" column="4">
       <widget class="QLineEdit" name="y_cor">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>0</string>
        </property>
