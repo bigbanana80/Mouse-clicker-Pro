@@ -163,11 +163,6 @@
          <string>Triple</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Hold</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>

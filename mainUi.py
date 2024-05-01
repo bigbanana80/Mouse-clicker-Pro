@@ -104,7 +104,6 @@ class Ui_main_window(object):
         self.comboB_clickType.addItem("")
         self.comboB_clickType.addItem("")
         self.comboB_clickType.addItem("")
-        self.comboB_clickType.addItem("")
         self.comboB_clickType.setObjectName(u"comboB_clickType")
 
         self.gridLayout.addWidget(self.comboB_clickType, 1, 1, 1, 1)
@@ -308,7 +307,6 @@ class Ui_main_window(object):
         self.comboB_clickType.setItemText(0, QCoreApplication.translate("main_window", u"Single", None))
         self.comboB_clickType.setItemText(1, QCoreApplication.translate("main_window", u"Double", None))
         self.comboB_clickType.setItemText(2, QCoreApplication.translate("main_window", u"Triple", None))
-        self.comboB_clickType.setItemText(3, QCoreApplication.translate("main_window", u"Hold", None))
 
 #if QT_CONFIG(tooltip)
         self.grb_cur_pos.setToolTip(QCoreApplication.translate("main_window", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

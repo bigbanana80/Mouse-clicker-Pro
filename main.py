@@ -120,9 +120,7 @@ class MainWindow(QMainWindow):
 
         if timer == 0 and self.click_repeat == 0:
             while True:
-                ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
-                time.sleep(hold_time)
-                ctypes.windll.user32.mouse_event(up, 0, 0, 0, 0)
+                self.click(hold_time, up, down)
                 time.sleep(delay)
                 if self.__stop_threads == True:
                     return
@@ -135,9 +133,7 @@ class MainWindow(QMainWindow):
             self.thread_timer = threading.Thread(target=self.timer_countdown)
             self.thread_timer.start()
             while True:
-                ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
-                time.sleep(hold_time)
-                ctypes.windll.user32.mouse_event(up, 0, 0, 0, 0)
+                self.click(hold_time, up, down)
                 temp -= 1
                 time.sleep(delay)
                 if self.__stop_threads == True or temp == 0:
@@ -148,9 +144,7 @@ class MainWindow(QMainWindow):
                     return
         else:
             while True:
-                ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
-                time.sleep(hold_time)
-                ctypes.windll.user32.mouse_event(up, 0, 0, 0, 0)
+                self.click(hold_time, up, down)
                 temp -= 1
                 time.sleep(delay)
                 if self.__stop_threads == True or temp == 0:
@@ -158,6 +152,16 @@ class MainWindow(QMainWindow):
                     self.ui.btn_start.setDisabled(False)
                     self.ui.btn_stop.setDisabled(True)
                     return
+
+    def click(self, hold_time, up, down):
+        temp = self.click_type[self.ui.comboB_clickType.currentText()]
+        for _ in range(temp):
+            self.click_helper(hold_time, up, down)
+
+    def click_helper(self, hold_time, up, down):
+        ctypes.windll.user32.mouse_event(down, 0, 0, 0, 0)  # left down
+        time.sleep(hold_time)
+        ctypes.windll.user32.mouse_event(up, 0, 0, 0, 0)
 
     def timer_countdown(self):
         temp = self.click_timer
@@ -200,6 +204,7 @@ class MainWindow(QMainWindow):
             + int(self.ui.le_hold_ms.text()) / 1000
         )
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
+        self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
 
     def repeat_opt(self):
         if self.ui.repeat_opt_1.isChecked():
