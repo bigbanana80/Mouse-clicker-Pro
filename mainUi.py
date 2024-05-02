@@ -16,15 +16,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
-    QLabel, QLineEdit, QMainWindow, QMenuBar,
-    QPushButton, QRadioButton, QSizePolicy, QSpinBox,
-    QStatusBar, QWidget)
+    QLabel, QLayout, QLineEdit, QMainWindow,
+    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
+    QSpinBox, QWidget)
 
 class Ui_main_window(object):
     def setupUi(self, main_window):
         if not main_window.objectName():
             main_window.setObjectName(u"main_window")
-        main_window.resize(591, 654)
+        main_window.resize(591, 556)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -113,12 +113,6 @@ class Ui_main_window(object):
         self.grb_cur_pos.setGeometry(QRect(290, 330, 291, 121))
         self.gridLayout_3 = QGridLayout(self.grb_cur_pos)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.pos_opt_1 = QRadioButton(self.grb_cur_pos)
-        self.pos_opt_1.setObjectName(u"pos_opt_1")
-        self.pos_opt_1.setChecked(True)
-
-        self.gridLayout_3.addWidget(self.pos_opt_1, 0, 0, 1, 3)
-
         self.pos_opt_2 = QRadioButton(self.grb_cur_pos)
         self.pos_opt_2.setObjectName(u"pos_opt_2")
 
@@ -146,13 +140,12 @@ class Ui_main_window(object):
 
         self.gridLayout_3.addWidget(self.y_cor, 1, 4, 1, 1)
 
-        self.btn_start = QPushButton(self.central_widget)
-        self.btn_start.setObjectName(u"btn_start")
-        self.btn_start.setGeometry(QRect(140, 460, 141, 51))
-        self.btn_stop = QPushButton(self.central_widget)
-        self.btn_stop.setObjectName(u"btn_stop")
-        self.btn_stop.setEnabled(False)
-        self.btn_stop.setGeometry(QRect(290, 460, 141, 51))
+        self.pos_opt_1 = QRadioButton(self.grb_cur_pos)
+        self.pos_opt_1.setObjectName(u"pos_opt_1")
+        self.pos_opt_1.setChecked(True)
+
+        self.gridLayout_3.addWidget(self.pos_opt_1, 0, 0, 1, 4)
+
         self.grb_clk_repeat = QGroupBox(self.central_widget)
         self.grb_clk_repeat.setObjectName(u"grb_clk_repeat")
         self.grb_clk_repeat.setGeometry(QRect(10, 330, 271, 121))
@@ -266,14 +259,51 @@ class Ui_main_window(object):
 
         self.gridLayout_6.addWidget(self.label_16, 0, 7, 1, 1)
 
+        self.widget = QWidget(self.central_widget)
+        self.widget.setObjectName(u"widget")
+        self.widget.setGeometry(QRect(10, 460, 571, 71))
+        self.gridLayout_7 = QGridLayout(self.widget)
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
+        self.gridLayout_7.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.gridLayout_7.setHorizontalSpacing(6)
+        self.gridLayout_7.setContentsMargins(6, 6, 6, 6)
+        self.btn_start = QPushButton(self.widget)
+        self.btn_start.setObjectName(u"btn_start")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.btn_start.sizePolicy().hasHeightForWidth())
+        self.btn_start.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_7.addWidget(self.btn_start, 0, 0, 1, 1)
+
+        self.btn_stop = QPushButton(self.widget)
+        self.btn_stop.setObjectName(u"btn_stop")
+        self.btn_stop.setEnabled(False)
+        sizePolicy1.setHeightForWidth(self.btn_stop.sizePolicy().hasHeightForWidth())
+        self.btn_stop.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_7.addWidget(self.btn_stop, 0, 1, 1, 1)
+
+        self.btn_shortcut = QPushButton(self.widget)
+        self.btn_shortcut.setObjectName(u"btn_shortcut")
+        sizePolicy1.setHeightForWidth(self.btn_shortcut.sizePolicy().hasHeightForWidth())
+        self.btn_shortcut.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_7.addWidget(self.btn_shortcut, 0, 2, 1, 1)
+
+        self.btn_help = QPushButton(self.widget)
+        self.btn_help.setObjectName(u"btn_help")
+        sizePolicy1.setHeightForWidth(self.btn_help.sizePolicy().hasHeightForWidth())
+        self.btn_help.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_7.addWidget(self.btn_help, 0, 3, 1, 1)
+
         main_window.setCentralWidget(self.central_widget)
         self.menu_bar = QMenuBar(main_window)
         self.menu_bar.setObjectName(u"menu_bar")
         self.menu_bar.setGeometry(QRect(0, 0, 591, 22))
         main_window.setMenuBar(self.menu_bar)
-        self.statusBar = QStatusBar(main_window)
-        self.statusBar.setObjectName(u"statusBar")
-        main_window.setStatusBar(self.statusBar)
 
         self.retranslateUi(main_window)
 
@@ -325,20 +355,12 @@ class Ui_main_window(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Controls the position of the cursur, by default it clicks on the current position of the cursur and you are able to move the cursur around. specifying a  position means the auto clicker will only click that position on the screen which varies depending on the monitor.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.grb_cur_pos.setTitle(QCoreApplication.translate("main_window", u"Cursur Position", None))
-        self.pos_opt_1.setText(QCoreApplication.translate("main_window", u"Current position (default)", None))
         self.pos_opt_2.setText(QCoreApplication.translate("main_window", u"Pick position :", None))
         self.label_11.setText(QCoreApplication.translate("main_window", u"X :", None))
         self.x_cor.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_12.setText(QCoreApplication.translate("main_window", u"Y :", None))
         self.y_cor.setText(QCoreApplication.translate("main_window", u"0", None))
-#if QT_CONFIG(tooltip)
-        self.btn_start.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Starts the auto clicker. (default shortcut is F6)</p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
-        self.btn_start.setText(QCoreApplication.translate("main_window", u"Start", None))
-#if QT_CONFIG(tooltip)
-        self.btn_stop.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>stops the auto clicker. (default shortcut is F6)</p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
-        self.btn_stop.setText(QCoreApplication.translate("main_window", u"Stop", None))
+        self.pos_opt_1.setText(QCoreApplication.translate("main_window", u"Current position (default)", None))
 #if QT_CONFIG(tooltip)
         self.grb_clk_repeat.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>how much clicks  the auto clicker will perform.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
@@ -372,5 +394,15 @@ class Ui_main_window(object):
         self.label_15.setText(QCoreApplication.translate("main_window", u"seconds", None))
         self.le_hold_ms.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_16.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
+#if QT_CONFIG(tooltip)
+        self.btn_start.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Starts the auto clicker. (default shortcut is F6)</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.btn_start.setText(QCoreApplication.translate("main_window", u"Start (F6)", None))
+#if QT_CONFIG(tooltip)
+        self.btn_stop.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>stops the auto clicker. (default shortcut is F6)</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.btn_stop.setText(QCoreApplication.translate("main_window", u"Stop (F6)", None))
+        self.btn_shortcut.setText(QCoreApplication.translate("main_window", u"Hotkey Setting", None))
+        self.btn_help.setText(QCoreApplication.translate("main_window", u"Help >>", None))
     # retranslateUi
 
