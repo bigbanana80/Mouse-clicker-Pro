@@ -13,6 +13,7 @@ import keyboard
 import ctypes
 from unittest.mock import patch
 
+# ? replace this during build time with import pyautogui, its just there to get rid of the annoying error that the user will never see
 with patch("ctypes.windll.user32.SetProcessDPIAware", autospec=True):
     import pyautogui
 
