@@ -4,5 +4,5 @@ with this auto clicker you can easily achive near 1000cps or the specific cps yo
 like OP auto clicker you may assign a new hotkey which by default is 'F6'.
 
 <image>
-  <img src="/demo image.png" width="100" />
+  <img src="/demo image.png" width="500" />
 </image>
