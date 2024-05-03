@@ -6,3 +6,4 @@ like OP auto clicker you may assign a new hotkey which by default is 'F6'.
 <p float="left">
   <img src="/demo image.png" width="100" />
 </p>
+  
