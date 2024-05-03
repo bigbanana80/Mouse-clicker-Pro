@@ -17,19 +17,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
     QLabel, QLayout, QLineEdit, QMainWindow,
-    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
-    QSpinBox, QWidget)
+    QPushButton, QRadioButton, QSizePolicy, QSpinBox,
+    QWidget)
 
 class Ui_main_window(object):
     def setupUi(self, main_window):
         if not main_window.objectName():
             main_window.setObjectName(u"main_window")
         main_window.resize(591, 556)
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(main_window.sizePolicy().hasHeightForWidth())
-        main_window.setSizePolicy(sizePolicy)
+        main_window.setMinimumSize(QSize(591, 556))
+        main_window.setMaximumSize(QSize(591, 556))
         self.central_widget = QWidget(main_window)
         self.central_widget.setObjectName(u"central_widget")
         self.grb_clk_interval = QGroupBox(self.central_widget)
@@ -259,51 +256,47 @@ class Ui_main_window(object):
 
         self.gridLayout_6.addWidget(self.label_16, 0, 7, 1, 1)
 
-        self.widget = QWidget(self.central_widget)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(10, 460, 571, 71))
-        self.gridLayout_7 = QGridLayout(self.widget)
+        self.layoutWidget = QWidget(self.central_widget)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(10, 460, 571, 71))
+        self.gridLayout_7 = QGridLayout(self.layoutWidget)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.gridLayout_7.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.gridLayout_7.setHorizontalSpacing(6)
         self.gridLayout_7.setContentsMargins(6, 6, 6, 6)
-        self.btn_start = QPushButton(self.widget)
+        self.btn_start = QPushButton(self.layoutWidget)
         self.btn_start.setObjectName(u"btn_start")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.btn_start.sizePolicy().hasHeightForWidth())
-        self.btn_start.setSizePolicy(sizePolicy1)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_start.sizePolicy().hasHeightForWidth())
+        self.btn_start.setSizePolicy(sizePolicy)
 
         self.gridLayout_7.addWidget(self.btn_start, 0, 0, 1, 1)
 
-        self.btn_stop = QPushButton(self.widget)
+        self.btn_stop = QPushButton(self.layoutWidget)
         self.btn_stop.setObjectName(u"btn_stop")
         self.btn_stop.setEnabled(False)
-        sizePolicy1.setHeightForWidth(self.btn_stop.sizePolicy().hasHeightForWidth())
-        self.btn_stop.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.btn_stop.sizePolicy().hasHeightForWidth())
+        self.btn_stop.setSizePolicy(sizePolicy)
 
         self.gridLayout_7.addWidget(self.btn_stop, 0, 1, 1, 1)
 
-        self.btn_shortcut = QPushButton(self.widget)
+        self.btn_shortcut = QPushButton(self.layoutWidget)
         self.btn_shortcut.setObjectName(u"btn_shortcut")
-        sizePolicy1.setHeightForWidth(self.btn_shortcut.sizePolicy().hasHeightForWidth())
-        self.btn_shortcut.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.btn_shortcut.sizePolicy().hasHeightForWidth())
+        self.btn_shortcut.setSizePolicy(sizePolicy)
 
         self.gridLayout_7.addWidget(self.btn_shortcut, 0, 2, 1, 1)
 
-        self.btn_help = QPushButton(self.widget)
+        self.btn_help = QPushButton(self.layoutWidget)
         self.btn_help.setObjectName(u"btn_help")
-        sizePolicy1.setHeightForWidth(self.btn_help.sizePolicy().hasHeightForWidth())
-        self.btn_help.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.btn_help.sizePolicy().hasHeightForWidth())
+        self.btn_help.setSizePolicy(sizePolicy)
 
         self.gridLayout_7.addWidget(self.btn_help, 0, 3, 1, 1)
 
         main_window.setCentralWidget(self.central_widget)
-        self.menu_bar = QMenuBar(main_window)
-        self.menu_bar.setObjectName(u"menu_bar")
-        self.menu_bar.setGeometry(QRect(0, 0, 591, 22))
-        main_window.setMenuBar(self.menu_bar)
 
         self.retranslateUi(main_window)
 

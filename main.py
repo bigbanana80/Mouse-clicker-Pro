@@ -24,6 +24,8 @@ class MainWindow(QMainWindow):
 
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
+        self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
+        self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
         self.timer = QtCore.QTimer()
 
         # & startup tasks
