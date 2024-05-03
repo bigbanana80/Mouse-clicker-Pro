@@ -519,8 +519,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hotkey cannot be modifiers like ctrl , alt, shift , caps_lock , windows btn&lt;/p&gt;&lt;p&gt;Hotkey cannot be prtscn , scrlk , numlk&lt;/p&gt;&lt;p&gt;any other keyboard key is valid&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Hotkey Setting</string>
+        <string>Hotkey Setting </string>
        </property>
       </widget>
      </item>

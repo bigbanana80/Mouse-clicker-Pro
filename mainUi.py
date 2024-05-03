@@ -395,7 +395,10 @@ class Ui_main_window(object):
         self.btn_stop.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>stops the auto clicker. (default shortcut is F6)</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.btn_stop.setText(QCoreApplication.translate("main_window", u"Stop (F6)", None))
-        self.btn_shortcut.setText(QCoreApplication.translate("main_window", u"Hotkey Setting", None))
+#if QT_CONFIG(tooltip)
+        self.btn_shortcut.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Hotkey cannot be modifiers like ctrl , alt, shift , caps_lock , windows btn</p><p>Hotkey cannot be prtscn , scrlk , numlk</p><p>any other keyboard key is valid</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.btn_shortcut.setText(QCoreApplication.translate("main_window", u"Hotkey Setting ", None))
         self.btn_help.setText(QCoreApplication.translate("main_window", u"Help >>", None))
     # retranslateUi
 

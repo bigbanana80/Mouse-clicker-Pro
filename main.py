@@ -2,6 +2,8 @@ import multiprocessing.process
 import sys
 import time
 import random
+import os
+
 
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -10,6 +12,7 @@ from PySide6.QtCore import QFile, Qt, QTranslator
 from mainUi import Ui_main_window
 import threading
 import keyboard
+import pynput
 import ctypes
 from unittest.mock import patch
 
@@ -97,7 +100,8 @@ class MainWindow(QMainWindow):
 
         self.ui.btn_start.clicked.connect(self.start)
         self.ui.btn_stop.clicked.connect(self.stop)
-
+        self.ui.btn_shortcut.clicked.connect(self.shortcut_change)
+        self.ui.btn_help.clicked.connect(self.help_func)
         # ? Qshortcut is dogshit and doesnt work for my usecase
         """  
         shortcut = QtGui.QKeySequence(QTranslator.tr("Ctrl+B"))
@@ -112,6 +116,89 @@ class MainWindow(QMainWindow):
         """
         self.shortcut_start_stop = "F6"
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
+
+    def help_func(self):
+        os.system('start "" https://github.com/bigbanana80/Mouse-clicker-Pro')
+
+    def shortcut_change(self):
+        keyboard.remove_hotkey(self.shortcut_start_stop)
+
+        def on_press(key):
+            # pynput.keyboard.Key.
+            if isinstance(key, pynput.keyboard.KeyCode):
+                self.shortcut_start_stop = key.char
+                print(key)
+            else:
+                if key == pynput.keyboard.Key.f1:
+                    self.shortcut_start_stop = "F1"
+                    print(key)
+                elif key == pynput.keyboard.Key.f2:
+                    self.shortcut_start_stop = "F2"
+                    print(key)
+                elif key == pynput.keyboard.Key.f3:
+                    self.shortcut_start_stop = "F3"
+                    print(key)
+                elif key == pynput.keyboard.Key.f4:
+                    self.shortcut_start_stop = "F4"
+                    print(key)
+                elif key == pynput.keyboard.Key.f5:
+                    self.shortcut_start_stop = "F5"
+                    print(key)
+                elif key == pynput.keyboard.Key.f6:
+                    self.shortcut_start_stop = "F6"
+                    print(key)
+                elif key == pynput.keyboard.Key.f7:
+                    self.shortcut_start_stop = "F7"
+                    print(key)
+                elif key == pynput.keyboard.Key.f8:
+                    self.shortcut_start_stop = "F8"
+                    print(key)
+                elif key == pynput.keyboard.Key.f9:
+                    self.shortcut_start_stop = "F9"
+                    print(key)
+                elif key == pynput.keyboard.Key.f10:
+                    self.shortcut_start_stop = "F10"
+                    print(key)
+                elif key == pynput.keyboard.Key.f11:
+                    self.shortcut_start_stop = "F11"
+                    print(key)
+                elif key == pynput.keyboard.Key.f12:
+                    self.shortcut_start_stop = "F12"
+                    print(key)
+                elif key == pynput.keyboard.Key.home:
+                    self.shortcut_start_stop = "home"
+                    print(key)
+                elif key == pynput.keyboard.Key.insert:
+                    self.shortcut_start_stop = "insert"
+                    print(key)
+                elif key == pynput.keyboard.Key.delete:
+                    self.shortcut_start_stop = "delete"
+                    print(key)
+                elif key == pynput.keyboard.Key.end:
+                    self.shortcut_start_stop = "end"
+                    print(key)
+                elif key == pynput.keyboard.Key.page_up:
+                    self.shortcut_start_stop = "page_up"
+                    print(key)
+                elif key == pynput.keyboard.Key.page_down:
+                    self.shortcut_start_stop = "page_down"
+                    print(key)
+                elif key == pynput.keyboard.Key.pause:
+                    self.shortcut_start_stop = "pause"
+                    print(key)
+
+        def on_release(key):
+            keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
+            self.ui.btn_start.setText(f"Start({self.shortcut_start_stop})")
+            self.ui.btn_stop.setText(f"Stop({self.shortcut_start_stop})")
+            self.ui.btn_shortcut.setText(f"New Hotkey is ({self.shortcut_start_stop})")
+            return False
+
+        # Collect events until released
+        with pynput.keyboard.Listener(
+            on_press=on_press, on_release=on_release
+        ) as listener:
+            listener.join()
 
     def shortcut_func(self):
         if self.__stop_threads:
@@ -181,6 +268,7 @@ class MainWindow(QMainWindow):
         self.__stop_threads = True
 
     def start(self):
+        self.ui.btn_shortcut.setEnabled(False)
         self.ui.btn_start.setDisabled(True)
         self.ui.btn_stop.setDisabled(False)
         self.click_thread = threading.Thread(
@@ -195,6 +283,7 @@ class MainWindow(QMainWindow):
         self.click_thread.join()
         self.ui.btn_start.setDisabled(False)
         self.ui.btn_stop.setDisabled(True)
+        self.ui.btn_shortcut.setEnabled(True)
 
     def update_vars(self):
         self.click_speed = (
