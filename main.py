@@ -8,6 +8,7 @@ import os
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QFile, Qt, QTranslator
+from PySide6.QtGui import QIcon, QPixmap
 
 from mainUi import Ui_main_window
 import threading
@@ -30,6 +31,9 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
         self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
         self.timer = QtCore.QTimer()
+        my_pixmap = QPixmap("icon.ico")
+        self.my_icon = QIcon(my_pixmap)
+        self.setWindowIcon(self.my_icon)
 
         # & startup tasks
         # self.ui.btn_stop.setDisabled(True) i refactored it, will keep this block of code for now
