@@ -237,8 +237,11 @@ class MainWindow(QMainWindow):
             time.sleep(delay)
             if self.__stop_threads == True or temp == 0:
                 self.__stop_threads = True
-                if self.thread_timer.is_alive():
-                    self.thread_timer.join(0.2)
+                try:
+                    if self.thread_timer.is_alive():
+                        self.thread_timer.join(0.2)
+                except AttributeError:
+                    pass
                 self.ui.btn_start.setDisabled(False)
                 self.ui.btn_stop.setDisabled(True)
                 return
