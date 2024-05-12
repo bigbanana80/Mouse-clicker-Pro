@@ -109,74 +109,78 @@ class MainWindow(QMainWindow):
             # pynput.keyboard.Key.
             if isinstance(key, pynput.keyboard.KeyCode):
                 self.shortcut_start_stop = key.char
-                print(key)
+
             else:
                 if key == pynput.keyboard.Key.f1:
                     self.shortcut_start_stop = "F1"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f2:
                     self.shortcut_start_stop = "F2"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f3:
                     self.shortcut_start_stop = "F3"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f4:
                     self.shortcut_start_stop = "F4"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f5:
                     self.shortcut_start_stop = "F5"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f6:
                     self.shortcut_start_stop = "F6"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f7:
                     self.shortcut_start_stop = "F7"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f8:
                     self.shortcut_start_stop = "F8"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f9:
                     self.shortcut_start_stop = "F9"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f10:
                     self.shortcut_start_stop = "F10"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f11:
                     self.shortcut_start_stop = "F11"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.f12:
                     self.shortcut_start_stop = "F12"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.home:
                     self.shortcut_start_stop = "home"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.insert:
                     self.shortcut_start_stop = "insert"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.delete:
                     self.shortcut_start_stop = "delete"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.end:
                     self.shortcut_start_stop = "end"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.page_up:
                     self.shortcut_start_stop = "page_up"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.page_down:
                     self.shortcut_start_stop = "page_down"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.pause:
                     self.shortcut_start_stop = "pause"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.backspace:
                     self.shortcut_start_stop = "backspace"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.enter:
                     self.shortcut_start_stop = "enter"
-                    print(key)
+
                 elif key == pynput.keyboard.Key.space:
-                    self.shortcut_start_stop = "space"
-                    print(key)
+                    self.shortcut_start_stop = (
+                        "F6"  # ? space does not work well for the time being
+                    )
+
+                else:
+                    self.shortcut_start_stop = "F6"
 
         def on_release(key):
             keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
