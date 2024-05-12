@@ -1,20 +1,18 @@
-import multiprocessing.process
 import sys
 import time
-import random
 import os
 
-
-from PySide6 import QtCore, QtWidgets, QtGui
+from PySide6 import QtCore
 from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QFile, Qt, QTranslator
 from PySide6.QtGui import QIcon, QPixmap
 
 from mainUi import Ui_main_window
+
 import threading
 import keyboard
 import pynput
 import ctypes
+
 from unittest.mock import patch
 
 # ? replace this during build time with import pyautogui, its just there to get rid of the annoying error that the user will never see
@@ -35,9 +33,6 @@ class MainWindow(QMainWindow):
         self.my_icon = QIcon(my_pixmap)
         self.setWindowIcon(self.my_icon)
 
-        # & startup tasks
-        # self.ui.btn_stop.setDisabled(True) i refactored it, will keep this block of code for now
-        # self.ui.repeat_times.setDisabled(True)
         # & variables
 
         self.MOUSEEVENTF_MOVE = 0x0001  # mouse move
@@ -50,6 +45,9 @@ class MainWindow(QMainWindow):
         self.MOUSEEVENTF_WHEEL = 0x0800  # wheel button rolled
         self.MOUSEEVENTF_ABSOLUTE = 0x8000  # absolute move
 
+        self.__stop_threads = True  # ? start and stop btns depends on this
+
+        # & startup tasks
         self.ui.le_hours.setText("0")
         self.ui.le_mins.setText("0")
         self.ui.le_s.setText("0")
@@ -66,15 +64,6 @@ class MainWindow(QMainWindow):
         self.ui.le_hold_ms.setText("0")
 
         self.ui.repeat_times.setValue(0)
-
-        """        
-        self.ui.le_hours.setDisabled(True)
-        self.ui.le_mins.setDisabled(True)
-        self.ui.le_s.setDisabled(True)
-        self.ui.le_ms.setDisabled(True)
-        """  # ? might need to add lock and unlock functions
-
-        self.__stop_threads = True  # ? start and stop btns depends on this
 
         self.update_vars()  # ? runs once to update properly
 
@@ -106,18 +95,7 @@ class MainWindow(QMainWindow):
         self.ui.btn_stop.clicked.connect(self.stop)
         self.ui.btn_shortcut.clicked.connect(self.shortcut_change)
         self.ui.btn_help.clicked.connect(self.help_func)
-        # ? Qshortcut is dogshit and doesnt work for my usecase
-        """  
-        shortcut = QtGui.QKeySequence(QTranslator.tr("Ctrl+B"))
-        start_shortcut = QtGui.QShortcut(shortcut, self)
-        start_shortcut.activated.connect(self.ui.btn_start.click)
 
-        stop_shortcut = QtGui.QShortcut(shortcut, self)
-        stop_shortcut.activated.connect(self.ui.btn_stop.click)
-        self.shortcut_thread = threading.Thread(target=self.shortcut_func)
-        self.shortcut_thread.start()
-        
-        """
         self.shortcut_start_stop = "F6"
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
 
@@ -189,6 +167,15 @@ class MainWindow(QMainWindow):
                     print(key)
                 elif key == pynput.keyboard.Key.pause:
                     self.shortcut_start_stop = "pause"
+                    print(key)
+                elif key == pynput.keyboard.Key.backspace:
+                    self.shortcut_start_stop = "backspace"
+                    print(key)
+                elif key == pynput.keyboard.Key.enter:
+                    self.shortcut_start_stop = "enter"
+                    print(key)
+                elif key == pynput.keyboard.Key.space:
+                    self.shortcut_start_stop = "space"
                     print(key)
 
         def on_release(key):
