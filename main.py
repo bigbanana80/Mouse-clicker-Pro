@@ -280,24 +280,33 @@ class MainWindow(QMainWindow):
         self.ui.btn_shortcut.setEnabled(True)
 
     def update_vars(self):
-        self.click_speed = (
-            int(self.ui.le_hours.text()) * 3600
-            + int(self.ui.le_mins.text()) * 60
-            + int(self.ui.le_s.text())
-            + int(self.ui.le_ms.text()) / 1000
-        )
-        self.click_timer = (
-            int(self.ui.le_timer_h.text()) * 3600
-            + int(self.ui.le_timer_min.text()) * 60
-            + int(self.ui.le_timer_s.text())
-            + int(self.ui.le_timer_ms.text()) / 1000
-        )
-        self.click_hold = (
-            int(self.ui.le_hold_hours.text()) * 3600
-            + int(self.ui.le_hold_mins.text()) * 60
-            + int(self.ui.le_hold_s.text())
-            + int(self.ui.le_hold_ms.text()) / 1000
-        )
+        try:
+            self.click_speed = (
+                int(self.ui.le_hours.text()) * 3600
+                + int(self.ui.le_mins.text()) * 60
+                + int(self.ui.le_s.text())
+                + int(self.ui.le_ms.text()) / 1000
+            )
+        except ValueError:
+            pass
+        try:
+            self.click_timer = (
+                int(self.ui.le_timer_h.text()) * 3600
+                + int(self.ui.le_timer_min.text()) * 60
+                + int(self.ui.le_timer_s.text())
+                + int(self.ui.le_timer_ms.text()) / 1000
+            )
+        except ValueError:
+            pass
+        try:
+            self.click_hold = (
+                int(self.ui.le_hold_hours.text()) * 3600
+                + int(self.ui.le_hold_mins.text()) * 60
+                + int(self.ui.le_hold_s.text())
+                + int(self.ui.le_hold_ms.text()) / 1000
+            )
+        except ValueError:
+            pass
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
         self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
 
