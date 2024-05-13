@@ -264,9 +264,10 @@ class MainWindow(QMainWindow):
     def timer_countdown(self):
         temp = self.click_timer
         while True:
-            time.sleep(1)
-            temp = temp - 1
-            print(temp)
+            self.timer_sleep(
+                10
+            )  # ? this 10 is in millisecond not second, i found 10 millisecond to be the most accurate
+            temp = temp - 0.010
             if self.__stop_threads:
                 temp = 0
             if temp <= 0:
@@ -274,7 +275,7 @@ class MainWindow(QMainWindow):
                 break
 
     def timer_sleep(self, delay):
-        target = time.perf_counter_ns() + delay * 1000
+        target = time.perf_counter_ns() + delay * 1000000
         while time.perf_counter_ns() < target:
             pass  # precise timing
 
