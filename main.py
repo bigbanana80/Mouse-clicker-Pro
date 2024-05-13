@@ -248,6 +248,7 @@ class MainWindow(QMainWindow):
                     pass
                 self.ui.btn_start.setDisabled(False)
                 self.ui.btn_stop.setDisabled(True)
+                self.ui.btn_shortcut.setDisabled(False)
                 return
 
     def click(self, hold_time, up, down):
@@ -262,11 +263,23 @@ class MainWindow(QMainWindow):
 
     def timer_countdown(self):
         temp = self.click_timer
-        time.sleep(temp)
-        self.__stop_threads = True
+        while True:
+            time.sleep(1)
+            temp = temp - 1
+            print(temp)
+            if self.__stop_threads:
+                temp = 0
+            if temp <= 0:
+                self.__stop_threads = True
+                break
+
+    def timer_sleep(self, delay):
+        target = time.perf_counter_ns() + delay * 1000
+        while time.perf_counter_ns() < target:
+            pass  # precise timing
 
     def start(self):
-        self.ui.btn_shortcut.setEnabled(False)
+        self.ui.btn_shortcut.setDisabled(True)
         self.ui.btn_start.setDisabled(True)
         self.ui.btn_stop.setDisabled(False)
         self.click_thread = threading.Thread(
@@ -278,10 +291,13 @@ class MainWindow(QMainWindow):
 
     def stop(self):
         self.__stop_threads = True
-        self.click_thread.join()
+        try:
+            self.click_thread.join()
+        except RuntimeError:
+            pass
         self.ui.btn_start.setDisabled(False)
         self.ui.btn_stop.setDisabled(True)
-        self.ui.btn_shortcut.setEnabled(True)
+        self.ui.btn_shortcut.setDisabled(False)
 
     def update_vars(self):
         try:
