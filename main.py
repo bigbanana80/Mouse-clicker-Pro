@@ -292,10 +292,16 @@ class MainWindow(QMainWindow):
 
     def start(self):
         if self.click_speed == -1 or self.click_hold == -1 or self.click_timer == -1:
-            logger.warning("Empty values when app is started,blank fields are not allowed.")
+            error_message = "Empty or invalid values when auto clicker started.\nblank fields or non numeric values are not allowed."
+            logger.warning(error_message)
+            
             msg_box = QMessageBox()
-            msg_box.setText("1 or more Value fields are empty, fill them up !")
+            msg_box.setWindowTitle("Wrong Values")
+            msg_box.setWindowIcon(QIcon(QPixmap("icon.ico")))
+            msg_box.setIcon(QMessageBox.Warning)
+            msg_box.setText(error_message)
             msg_box.exec()
+            
         else:
             logger.info("Starting Auto clicker")
             self.ui.btn_shortcut.setDisabled(True)
