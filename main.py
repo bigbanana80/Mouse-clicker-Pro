@@ -4,7 +4,7 @@ import os
 import pathlib
 
 from PySide6 import QtCore
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow , QMessageBox
 from PySide6.QtGui import QIcon, QPixmap
 
 from mainUi import Ui_main_window
@@ -291,16 +291,22 @@ class MainWindow(QMainWindow):
             pass  # precise timing
 
     def start(self):
-        logger.info("Starting Auto clicker")
-        self.ui.btn_shortcut.setDisabled(True)
-        self.ui.btn_start.setDisabled(True)
-        self.ui.btn_stop.setDisabled(False)
-        self.click_thread = threading.Thread(
-            target=self.click_inf,
-            args=(self.click_hold, self.click_speed, self.click_timer),
-        )
-        self.__stop_threads = False
-        self.click_thread.start()
+        if self.click_speed == -1 or self.click_hold == -1 or self.click_timer == -1:
+            logger.warning("Empty values when app is started,blank fields are not allowed.")
+            msg_box = QMessageBox()
+            msg_box.setText("1 or more Value fields are empty, fill them up !")
+            msg_box.exec()
+        else:
+            logger.info("Starting Auto clicker")
+            self.ui.btn_shortcut.setDisabled(True)
+            self.ui.btn_start.setDisabled(True)
+            self.ui.btn_stop.setDisabled(False)
+            self.click_thread = threading.Thread(
+                target=self.click_inf,
+                args=(self.click_hold, self.click_speed, self.click_timer),
+            )
+            self.__stop_threads = False
+            self.click_thread.start()
 
     def stop(self):
         logger.info("Stoping Auto clicker")
@@ -314,34 +320,6 @@ class MainWindow(QMainWindow):
         self.ui.btn_shortcut.setDisabled(False)
 
     def update_vars(self):
-        # ^ checking values
-        if self.ui.le_hours.text() == "":
-            self.ui.le_hours.setText("0")
-        if self.ui.le_mins.text() == "":
-            self.ui.le_mins.setText("0")
-        if self.ui.le_s.text() == "":
-            self.ui.le_s.setText("0")
-        if self.ui.le_ms.text() == "":
-            self.ui.le_ms.setText("0")
-
-        if self.ui.le_timer_h.text() == "":
-            self.ui.le_timer_h.setText("0")
-        if self.ui.le_timer_min.text() == "":
-            self.ui.le_timer_min.setText("0")
-        if self.ui.le_timer_s.text() == "":
-            self.ui.le_timer_s.setText("0")
-        if self.ui.le_timer_ms.text() == "":
-            self.ui.le_timer_ms.setText("0")
-
-        if self.ui.le_hold_hours.text() == "":
-            self.ui.le_hold_hours.setText("0")
-        if self.ui.le_hold_mins.text() == "":
-            self.ui.le_hold_mins.setText("0")
-        if self.ui.le_hold_s.text() == "":
-            self.ui.le_hold_s.setText("0")
-        if self.ui.le_hold_ms.text() == "":
-            self.ui.le_hold_ms.setText("0")
-            
         # ^ main update task
         try:
             self.click_speed = (
@@ -351,6 +329,7 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_ms.text()) / 1000
             )
         except ValueError:
+            self.click_speed = -1
             logger.warning("Wrong values for click speed, use diffrent values, this warning is safe.")
         try:
             self.click_timer = (
@@ -360,6 +339,7 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_timer_ms.text()) / 1000
             )
         except ValueError:
+            self.click_timer = -1
             logger.warning("Wrong values for click timer, use diffrent values, this warning is safe.")
         try:
             self.click_hold = (
@@ -369,6 +349,7 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_hold_ms.text()) / 1000
             )
         except ValueError:
+            self.click_hold = -1
             logger.warning("Wrong values for click hold, use diffrent values, this warning is safe.")
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
         self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
