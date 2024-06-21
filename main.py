@@ -1,6 +1,7 @@
 import sys
 import time
 import os
+import pathlib
 
 from PySide6 import QtCore
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -8,14 +9,15 @@ from PySide6.QtGui import QIcon, QPixmap
 
 from mainUi import Ui_main_window
 
+from icecream import ic
+from loguru import logger
 import threading
 import keyboard
 import pynput
 import ctypes
 
-from unittest.mock import patch
-
 # ? replace this during build time with import pyautogui, its just there to get rid of the annoying error that the user will never see
+from unittest.mock import patch
 with patch("ctypes.windll.user32.SetProcessDPIAware", autospec=True):
     import pyautogui
 
@@ -32,7 +34,7 @@ class MainWindow(QMainWindow):
         my_pixmap = QPixmap("icon.ico")
         self.my_icon = QIcon(my_pixmap)
         self.setWindowIcon(self.my_icon)
-
+        logger.info("App successfully initiated.")
         # & variables
 
         self.MOUSEEVENTF_MOVE = 0x0001  # mouse move
@@ -46,7 +48,8 @@ class MainWindow(QMainWindow):
         self.MOUSEEVENTF_ABSOLUTE = 0x8000  # absolute move
 
         self.__stop_threads = True  # ? start and stop btns depends on this
-
+        logger.info("thread successfully initiated.")
+        
         # & startup tasks
         self.ui.le_hours.setText("0")
         self.ui.le_mins.setText("0")
@@ -98,11 +101,14 @@ class MainWindow(QMainWindow):
 
         self.shortcut_start_stop = "F6"
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
+        
+        logger.info("initiation complete.")
 
     def help_func(self):
         os.system('start "" https://github.com/bigbanana80/Mouse-clicker-Pro')
 
     def shortcut_change(self):
+        logger.info("changing shortcut")
         keyboard.remove_hotkey(self.shortcut_start_stop)
 
         def on_press(key):
@@ -194,6 +200,7 @@ class MainWindow(QMainWindow):
             on_press=on_press, on_release=on_release
         ) as listener:
             listener.join()
+        logger.info("shortcut changed successfully")
 
     def shortcut_func(self):
         if self.__stop_threads:
@@ -202,6 +209,7 @@ class MainWindow(QMainWindow):
             self.stop()
 
     def click_inf(self, hold_time, delay, timer):
+        logger.info("Auto Clicker started")
         if self.ui.comboB_mouse_btn.currentText() == "Left":
             down = self.MOUSEEVENTF_LEFTDOWN
             up = self.MOUSEEVENTF_LEFTUP
@@ -223,6 +231,7 @@ class MainWindow(QMainWindow):
                 self.click(hold_time, up, down)
                 time.sleep(delay)
                 if self.__stop_threads == True:
+                    logger.info("Auto Clicker ended.")
                     return
         else:
             self.click_with_options(hold_time, delay, up, down)
@@ -249,6 +258,7 @@ class MainWindow(QMainWindow):
                 self.ui.btn_start.setDisabled(False)
                 self.ui.btn_stop.setDisabled(True)
                 self.ui.btn_shortcut.setDisabled(False)
+                logger.info("Auto Clicker ended")
                 return
 
     def click(self, hold_time, up, down):
@@ -272,6 +282,7 @@ class MainWindow(QMainWindow):
                 temp = 0
             if temp <= 0:
                 self.__stop_threads = True
+                logger.info("Timer ended.")
                 break
 
     def timer_sleep(self, delay):
@@ -280,6 +291,7 @@ class MainWindow(QMainWindow):
             pass  # precise timing
 
     def start(self):
+        logger.info("Starting Auto clicker")
         self.ui.btn_shortcut.setDisabled(True)
         self.ui.btn_start.setDisabled(True)
         self.ui.btn_stop.setDisabled(False)
@@ -291,16 +303,46 @@ class MainWindow(QMainWindow):
         self.click_thread.start()
 
     def stop(self):
+        logger.info("Stoping Auto clicker")
         self.__stop_threads = True
         try:
             self.click_thread.join()
         except RuntimeError:
-            pass
+            logger.warning("clicker thread was running, if the app is working currectly you may ignore this warning.")
         self.ui.btn_start.setDisabled(False)
         self.ui.btn_stop.setDisabled(True)
         self.ui.btn_shortcut.setDisabled(False)
 
     def update_vars(self):
+        # ^ checking values
+        if self.ui.le_hours.text() == "":
+            self.ui.le_hours.setText("0")
+        if self.ui.le_mins.text() == "":
+            self.ui.le_mins.setText("0")
+        if self.ui.le_s.text() == "":
+            self.ui.le_s.setText("0")
+        if self.ui.le_ms.text() == "":
+            self.ui.le_ms.setText("0")
+
+        if self.ui.le_timer_h.text() == "":
+            self.ui.le_timer_h.setText("0")
+        if self.ui.le_timer_min.text() == "":
+            self.ui.le_timer_min.setText("0")
+        if self.ui.le_timer_s.text() == "":
+            self.ui.le_timer_s.setText("0")
+        if self.ui.le_timer_ms.text() == "":
+            self.ui.le_timer_ms.setText("0")
+
+        if self.ui.le_hold_hours.text() == "":
+            self.ui.le_hold_hours.setText("0")
+        if self.ui.le_hold_mins.text() == "":
+            self.ui.le_hold_mins.setText("0")
+        if self.ui.le_hold_s.text() == "":
+            self.ui.le_hold_s.setText("0")
+        if self.ui.le_hold_ms.text() == "":
+            self.ui.le_hold_ms.setText("0")
+            
+        # ^ main update task
         try:
             self.click_speed = (
                 int(self.ui.le_hours.text()) * 3600
@@ -309,7 +351,7 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_ms.text()) / 1000
             )
         except ValueError:
-            pass
+            logger.warning("Wrong values for click speed, use diffrent values, this warning is safe.")
         try:
             self.click_timer = (
                 int(self.ui.le_timer_h.text()) * 3600
@@ -318,7 +360,7 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_timer_ms.text()) / 1000
             )
         except ValueError:
-            pass
+            logger.warning("Wrong values for click timer, use diffrent values, this warning is safe.")
         try:
             self.click_hold = (
                 int(self.ui.le_hold_hours.text()) * 3600
@@ -327,9 +369,10 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_hold_ms.text()) / 1000
             )
         except ValueError:
-            pass
+            logger.warning("Wrong values for click hold, use diffrent values, this warning is safe.")
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
         self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
+            
 
     def repeat_opt(self):
         if self.ui.repeat_opt_1.isChecked():
@@ -345,12 +388,24 @@ class MainWindow(QMainWindow):
         else:
             self.ui.x_cor.setEnabled(False)
             self.ui.y_cor.setEnabled(False)
-
-
-if __name__ == "__main__":
+            
+def main()-> None:
+    
+    # ^ checking if essential folders exist or not, if not create them
+    LOGS_PATH = pathlib.Path("logs/")
+    if not LOGS_PATH.exists():
+        LOGS_PATH.mkdir()
+        
+    # ^ logging stuff
+    logger.add("logs/log_{time}.log", retention="3 days" , level="INFO")
+    
+    # ^ main app
     app = QApplication(sys.argv)
 
     window = MainWindow()
     window.show()
 
     sys.exit(app.exec())
+    
+if __name__ == "__main__":
+    main()
