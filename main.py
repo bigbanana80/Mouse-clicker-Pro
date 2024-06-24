@@ -4,7 +4,7 @@ import os
 import pathlib
 
 from PySide6 import QtCore
-from PySide6.QtWidgets import QApplication, QMainWindow , QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QIcon, QPixmap
 
 from mainUi import Ui_main_window
@@ -18,6 +18,7 @@ import ctypes
 
 # ? replace this during build time with import pyautogui, its just there to get rid of the annoying error that the user will never see
 from unittest.mock import patch
+
 with patch("ctypes.windll.user32.SetProcessDPIAware", autospec=True):
     import pyautogui
 
@@ -49,7 +50,7 @@ class MainWindow(QMainWindow):
 
         self.__stop_threads = True  # ? start and stop btns depends on this
         logger.info("thread successfully initiated.")
-        
+
         # & startup tasks
         self.ui.le_hours.setText("0")
         self.ui.le_mins.setText("0")
@@ -101,7 +102,7 @@ class MainWindow(QMainWindow):
 
         self.shortcut_start_stop = "F6"
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
-        
+
         logger.info("initiation complete.")
 
     def help_func(self):
@@ -208,7 +209,40 @@ class MainWindow(QMainWindow):
         else:
             self.stop()
 
+    def alt_click(self, hold_time, delay, timer):
+        logger.info("Auto Clicker started.(alt)")
+        if self.click_timer > 0:
+            self.thread_timer = threading.Thread(target=self.timer_countdown)
+            self.thread_timer.start()
+        if self.ui.comboB_mouse_btn.currentText() == "Left":
+            temp = "left"
+        if self.ui.comboB_mouse_btn.currentText() == "right":
+            temp = "right"
+        if self.ui.comboB_mouse_btn.currentText() == "middle":
+            temp = "middle"
+        while True:
+            pyautogui.mouseDown(button=temp)
+            time.sleep(hold_time)
+            pyautogui.mouseUp(button=temp)
+            time.sleep(delay)
+            if self.__stop_threads == True:
+                try:
+                    if self.thread_timer.is_alive():
+                        self.thread_timer.join(0.2)
+                except AttributeError:
+                    pass
+                self.ui.btn_start.setDisabled(False)
+                self.ui.btn_stop.setDisabled(True)
+                self.ui.btn_shortcut.setDisabled(False)
+                logger.info("Auto Clicker ended")
+                break
+        logger.info("Auto Clicker finished.(alt)")
+        
+
     def click_inf(self, hold_time, delay, timer):
+        if self.ui.alt_clk_checkbox.isChecked():
+            self.alt_click(hold_time, delay, timer)
+            return
         logger.info("Auto Clicker started")
         if self.ui.comboB_mouse_btn.currentText() == "Left":
             down = self.MOUSEEVENTF_LEFTDOWN
@@ -294,14 +328,14 @@ class MainWindow(QMainWindow):
         if self.click_speed == -1 or self.click_hold == -1 or self.click_timer == -1:
             error_message = "Empty or invalid values when auto clicker started.\nblank fields or non numeric values are not allowed."
             logger.warning(error_message)
-            
+
             msg_box = QMessageBox()
             msg_box.setWindowTitle("Wrong Values")
             msg_box.setWindowIcon(QIcon(QPixmap("icon.ico")))
             msg_box.setIcon(QMessageBox.Warning)
             msg_box.setText(error_message)
             msg_box.exec()
-            
+
         else:
             logger.info("Starting Auto clicker")
             self.ui.btn_shortcut.setDisabled(True)
@@ -320,7 +354,9 @@ class MainWindow(QMainWindow):
         try:
             self.click_thread.join()
         except RuntimeError:
-            logger.warning("clicker thread was running, if the app is working currectly you may ignore this warning.")
+            logger.warning(
+                "clicker thread was running, if the app is working currectly you may ignore this warning."
+            )
         self.ui.btn_start.setDisabled(False)
         self.ui.btn_stop.setDisabled(True)
         self.ui.btn_shortcut.setDisabled(False)
@@ -336,7 +372,9 @@ class MainWindow(QMainWindow):
             )
         except ValueError:
             self.click_speed = -1
-            logger.warning("Wrong values for click speed, use diffrent values, this warning is safe.")
+            logger.warning(
+                "Wrong values for click speed, use diffrent values, this warning is safe."
+            )
         try:
             self.click_timer = (
                 int(self.ui.le_timer_h.text()) * 3600
@@ -346,7 +384,9 @@ class MainWindow(QMainWindow):
             )
         except ValueError:
             self.click_timer = -1
-            logger.warning("Wrong values for click timer, use diffrent values, this warning is safe.")
+            logger.warning(
+                "Wrong values for click timer, use diffrent values, this warning is safe."
+            )
         try:
             self.click_hold = (
                 int(self.ui.le_hold_hours.text()) * 3600
@@ -356,10 +396,11 @@ class MainWindow(QMainWindow):
             )
         except ValueError:
             self.click_hold = -1
-            logger.warning("Wrong values for click hold, use diffrent values, this warning is safe.")
+            logger.warning(
+                "Wrong values for click hold, use diffrent values, this warning is safe."
+            )
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
         self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
-            
 
     def repeat_opt(self):
         if self.ui.repeat_opt_1.isChecked():
@@ -375,17 +416,18 @@ class MainWindow(QMainWindow):
         else:
             self.ui.x_cor.setEnabled(False)
             self.ui.y_cor.setEnabled(False)
-            
-def main()-> None:
-    
+
+
+def main() -> None:
+
     # ^ checking if essential folders exist or not, if not create them
     LOGS_PATH = pathlib.Path("logs/")
     if not LOGS_PATH.exists():
         LOGS_PATH.mkdir()
-        
+
     # ^ logging stuff
-    logger.add("logs/log_{time}.log", retention="3 days" , level="INFO")
-    
+    logger.add("logs/log_{time}.log", retention="3 days", level="INFO")
+
     # ^ main app
     app = QApplication(sys.argv)
 
@@ -393,6 +435,7 @@ def main()-> None:
     window.show()
 
     sys.exit(app.exec())
-    
+
+
 if __name__ == "__main__":
     main()

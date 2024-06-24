@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainUi.ui'
+## Form generated from reading UI file 'mainui.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.0
 ##
@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
-    QLabel, QLayout, QLineEdit, QMainWindow,
-    QPushButton, QRadioButton, QSizePolicy, QSpinBox,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
+    QGroupBox, QLabel, QLayout, QLineEdit,
+    QMainWindow, QPushButton, QRadioButton, QSizePolicy,
+    QSpinBox, QWidget)
 
 class Ui_main_window(object):
     def setupUi(self, main_window):
@@ -79,10 +79,13 @@ class Ui_main_window(object):
         self.grb_clk_settings.setGeometry(QRect(10, 170, 271, 161))
         self.gridLayout = QGridLayout(self.grb_clk_settings)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_5 = QLabel(self.grb_clk_settings)
-        self.label_5.setObjectName(u"label_5")
+        self.comboB_clickType = QComboBox(self.grb_clk_settings)
+        self.comboB_clickType.addItem("")
+        self.comboB_clickType.addItem("")
+        self.comboB_clickType.addItem("")
+        self.comboB_clickType.setObjectName(u"comboB_clickType")
 
-        self.gridLayout.addWidget(self.label_5, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.comboB_clickType, 2, 1, 1, 1)
 
         self.comboB_mouse_btn = QComboBox(self.grb_clk_settings)
         self.comboB_mouse_btn.addItem("")
@@ -90,20 +93,22 @@ class Ui_main_window(object):
         self.comboB_mouse_btn.addItem("")
         self.comboB_mouse_btn.setObjectName(u"comboB_mouse_btn")
 
-        self.gridLayout.addWidget(self.comboB_mouse_btn, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.comboB_mouse_btn, 1, 1, 1, 1)
 
         self.label_6 = QLabel(self.grb_clk_settings)
         self.label_6.setObjectName(u"label_6")
 
-        self.gridLayout.addWidget(self.label_6, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_6, 2, 0, 1, 1)
 
-        self.comboB_clickType = QComboBox(self.grb_clk_settings)
-        self.comboB_clickType.addItem("")
-        self.comboB_clickType.addItem("")
-        self.comboB_clickType.addItem("")
-        self.comboB_clickType.setObjectName(u"comboB_clickType")
+        self.label_5 = QLabel(self.grb_clk_settings)
+        self.label_5.setObjectName(u"label_5")
 
-        self.gridLayout.addWidget(self.comboB_clickType, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_5, 1, 0, 1, 1)
+
+        self.alt_clk_checkbox = QCheckBox(self.grb_clk_settings)
+        self.alt_clk_checkbox.setObjectName(u"alt_clk_checkbox")
+
+        self.gridLayout.addWidget(self.alt_clk_checkbox, 0, 0, 1, 1)
 
         self.grb_cur_pos = QGroupBox(self.central_widget)
         self.grb_cur_pos.setObjectName(u"grb_cur_pos")
@@ -171,16 +176,6 @@ class Ui_main_window(object):
         self.grb_clk_timer.setGeometry(QRect(290, 170, 291, 161))
         self.gridLayout_2 = QGridLayout(self.grb_clk_timer)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.label_9 = QLabel(self.grb_clk_timer)
-        self.label_9.setObjectName(u"label_9")
-
-        self.gridLayout_2.addWidget(self.label_9, 0, 0, 1, 1)
-
-        self.le_timer_h = QLineEdit(self.grb_clk_timer)
-        self.le_timer_h.setObjectName(u"le_timer_h")
-
-        self.gridLayout_2.addWidget(self.le_timer_h, 0, 1, 1, 1)
-
         self.label_7 = QLabel(self.grb_clk_timer)
         self.label_7.setObjectName(u"label_7")
 
@@ -191,25 +186,35 @@ class Ui_main_window(object):
 
         self.gridLayout_2.addWidget(self.le_timer_min, 0, 3, 1, 1)
 
-        self.label_10 = QLabel(self.grb_clk_timer)
-        self.label_10.setObjectName(u"label_10")
-
-        self.gridLayout_2.addWidget(self.label_10, 1, 0, 1, 1)
-
         self.le_timer_s = QLineEdit(self.grb_clk_timer)
         self.le_timer_s.setObjectName(u"le_timer_s")
 
         self.gridLayout_2.addWidget(self.le_timer_s, 1, 1, 1, 1)
+
+        self.le_timer_ms = QLineEdit(self.grb_clk_timer)
+        self.le_timer_ms.setObjectName(u"le_timer_ms")
+
+        self.gridLayout_2.addWidget(self.le_timer_ms, 1, 3, 1, 1)
+
+        self.label_10 = QLabel(self.grb_clk_timer)
+        self.label_10.setObjectName(u"label_10")
+
+        self.gridLayout_2.addWidget(self.label_10, 1, 0, 1, 1)
 
         self.label_8 = QLabel(self.grb_clk_timer)
         self.label_8.setObjectName(u"label_8")
 
         self.gridLayout_2.addWidget(self.label_8, 1, 2, 1, 1)
 
-        self.le_timer_ms = QLineEdit(self.grb_clk_timer)
-        self.le_timer_ms.setObjectName(u"le_timer_ms")
+        self.label_9 = QLabel(self.grb_clk_timer)
+        self.label_9.setObjectName(u"label_9")
 
-        self.gridLayout_2.addWidget(self.le_timer_ms, 1, 3, 1, 1)
+        self.gridLayout_2.addWidget(self.label_9, 0, 0, 1, 1)
+
+        self.le_timer_h = QLineEdit(self.grb_clk_timer)
+        self.le_timer_h.setObjectName(u"le_timer_h")
+
+        self.gridLayout_2.addWidget(self.le_timer_h, 0, 1, 1, 1)
 
         self.grb_clk_interval_2 = QGroupBox(self.central_widget)
         self.grb_clk_interval_2.setObjectName(u"grb_clk_interval_2")
@@ -324,12 +329,6 @@ class Ui_main_window(object):
         self.grb_clk_settings.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Controls the click type and the mouse button that will perform the click.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.grb_clk_settings.setTitle(QCoreApplication.translate("main_window", u"Click settings", None))
-        self.label_5.setText(QCoreApplication.translate("main_window", u"Mouse button :", None))
-        self.comboB_mouse_btn.setItemText(0, QCoreApplication.translate("main_window", u"Left", None))
-        self.comboB_mouse_btn.setItemText(1, QCoreApplication.translate("main_window", u"Right", None))
-        self.comboB_mouse_btn.setItemText(2, QCoreApplication.translate("main_window", u"Middle", None))
-
-        self.label_6.setText(QCoreApplication.translate("main_window", u"Click Type :", None))
         self.comboB_clickType.setItemText(0, QCoreApplication.translate("main_window", u"Single", None))
         self.comboB_clickType.setItemText(1, QCoreApplication.translate("main_window", u"Double", None))
         self.comboB_clickType.setItemText(2, QCoreApplication.translate("main_window", u"Triple", None))
@@ -337,6 +336,19 @@ class Ui_main_window(object):
 #if QT_CONFIG(tooltip)
         self.comboB_clickType.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Single :  Click once</p><p>Double : Clicks twice ( same as double click)</p><p>Triple: Click three times </p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
+        self.comboB_mouse_btn.setItemText(0, QCoreApplication.translate("main_window", u"Left", None))
+        self.comboB_mouse_btn.setItemText(1, QCoreApplication.translate("main_window", u"Right", None))
+        self.comboB_mouse_btn.setItemText(2, QCoreApplication.translate("main_window", u"Middle", None))
+
+        self.label_6.setText(QCoreApplication.translate("main_window", u"Click Type :", None))
+        self.label_5.setText(QCoreApplication.translate("main_window", u"Mouse button :", None))
+#if QT_CONFIG(tooltip)
+        self.alt_clk_checkbox.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>This will use an alternative way to click, its significantly slower than the default way but the default way does not work on some apps.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(whatsthis)
+        self.alt_clk_checkbox.setWhatsThis(QCoreApplication.translate("main_window", u"<html><head/><body><p>This will use an alternative way to click, its significantly slower than the default way but the default way does not work on some apps</p></body></html>", None))
+#endif // QT_CONFIG(whatsthis)
+        self.alt_clk_checkbox.setText(QCoreApplication.translate("main_window", u"Alt Click type", None))
 #if QT_CONFIG(tooltip)
         self.grb_cur_pos.setToolTip(QCoreApplication.translate("main_window", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
@@ -364,14 +376,14 @@ class Ui_main_window(object):
         self.grb_clk_timer.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>How long the auto clicker will work. (0 on all time slots means no time limit)</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.grb_clk_timer.setTitle(QCoreApplication.translate("main_window", u"Click Timer", None))
-        self.label_9.setText(QCoreApplication.translate("main_window", u"Hours", None))
-        self.le_timer_h.setText(QCoreApplication.translate("main_window", u"0", None))
         self.label_7.setText(QCoreApplication.translate("main_window", u"min", None))
         self.le_timer_min.setText(QCoreApplication.translate("main_window", u"0", None))
-        self.label_10.setText(QCoreApplication.translate("main_window", u"seconds", None))
         self.le_timer_s.setText(QCoreApplication.translate("main_window", u"0", None))
-        self.label_8.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
         self.le_timer_ms.setText(QCoreApplication.translate("main_window", u"0", None))
+        self.label_10.setText(QCoreApplication.translate("main_window", u"seconds", None))
+        self.label_8.setText(QCoreApplication.translate("main_window", u"milliseconds", None))
+        self.label_9.setText(QCoreApplication.translate("main_window", u"Hours", None))
+        self.le_timer_h.setText(QCoreApplication.translate("main_window", u"0", None))
 #if QT_CONFIG(tooltip)
         self.grb_clk_interval_2.setToolTip(QCoreApplication.translate("main_window", u"<html><head/><body><p>Controls how long the mouse will hold to button as if it didnt let go of the click before releasing it. ( some games could use this function)</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
