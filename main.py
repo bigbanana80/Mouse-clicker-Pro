@@ -38,17 +38,17 @@ class MainWindow(QMainWindow):
         logger.info("App successfully initiated.")
         # & variables
 
-        self.MOUSEEVENTF_MOVE = 0x0001  # mouse move
-        self.MOUSEEVENTF_LEFTDOWN = 0x0002  # left button down
-        self.MOUSEEVENTF_LEFTUP = 0x0004  # left button up
-        self.MOUSEEVENTF_RIGHTDOWN = 0x0008  # right button down
-        self.MOUSEEVENTF_RIGHTUP = 0x0010  # right button up
-        self.MOUSEEVENTF_MIDDLEDOWN = 0x0020  # middle button down
-        self.MOUSEEVENTF_MIDDLEUP = 0x0040  # middle button up
-        self.MOUSEEVENTF_WHEEL = 0x0800  # wheel button rolled
-        self.MOUSEEVENTF_ABSOLUTE = 0x8000  # absolute move
+        self.MOUSE_EVENT_MOVE = 0x0001  # mouse move
+        self.MOUSE_EVENT_LEFTDOWN = 0x0002  # left button down
+        self.MOUSE_EVENT_LEFTUP = 0x0004  # left button up
+        self.MOUSE_EVENT_RIGHTDOWN = 0x0008  # right button down
+        self.MOUSE_EVENT_RIGHTUP = 0x0010  # right button up
+        self.MOUSE_EVENT_MIDDLEDOWN = 0x0020  # middle button down
+        self.MOUSE_EVENT_MIDDLEUP = 0x0040  # middle button up
+        self.MOUSE_EVENT_WHEEL = 0x0800  # wheel button rolled
+        self.MOUSE_EVENT_ABSOLUTE = 0x8000  # absolute move
 
-        self.__stop_threads = True  # ? start and stop btns depends on this
+        self.__stop_threads = True  # ? start and stop buttons depends on this. True means it will stop
         logger.info("thread successfully initiated.")
 
         # & startup tasks
@@ -216,9 +216,9 @@ class MainWindow(QMainWindow):
             self.thread_timer.start()
         if self.ui.comboB_mouse_btn.currentText() == "Left":
             temp = "left"
-        if self.ui.comboB_mouse_btn.currentText() == "right":
+        if self.ui.comboB_mouse_btn.currentText() == "Right":
             temp = "right"
-        if self.ui.comboB_mouse_btn.currentText() == "middle":
+        if self.ui.comboB_mouse_btn.currentText() == "Middle":
             temp = "middle"
         while True:
             pyautogui.mouseDown(button=temp)
@@ -245,14 +245,14 @@ class MainWindow(QMainWindow):
             return
         logger.info("Auto Clicker started")
         if self.ui.comboB_mouse_btn.currentText() == "Left":
-            down = self.MOUSEEVENTF_LEFTDOWN
-            up = self.MOUSEEVENTF_LEFTUP
+            down = self.MOUSE_EVENT_LEFTDOWN
+            up = self.MOUSE_EVENT_LEFTUP
         elif self.ui.comboB_mouse_btn.currentText() == "Right":
-            down = self.MOUSEEVENTF_RIGHTDOWN
-            up = self.MOUSEEVENTF_RIGHTUP
+            down = self.MOUSE_EVENT_RIGHTDOWN
+            up = self.MOUSE_EVENT_RIGHTUP
         elif self.ui.comboB_mouse_btn.currentText() == "Middle":
-            down = self.MOUSEEVENTF_MIDDLEDOWN
-            up = self.MOUSEEVENTF_MIDDLEUP
+            down = self.MOUSE_EVENT_MIDDLEDOWN
+            up = self.MOUSE_EVENT_MIDDLEUP
         if self.ui.pos_opt_2.isChecked():
             x = int(self.ui.x_cor.text())
             y = int(self.ui.y_cor.text())
@@ -349,13 +349,13 @@ class MainWindow(QMainWindow):
             self.click_thread.start()
 
     def stop(self):
-        logger.info("Stoping Auto clicker")
+        logger.info("Stopping Auto clicker")
         self.__stop_threads = True
         try:
             self.click_thread.join()
         except RuntimeError:
             logger.warning(
-                "clicker thread was running, if the app is working currectly you may ignore this warning."
+                "clicker thread was running, if the app is working correctly you may ignore this warning."
             )
         self.ui.btn_start.setDisabled(False)
         self.ui.btn_stop.setDisabled(True)
@@ -373,7 +373,7 @@ class MainWindow(QMainWindow):
         except ValueError:
             self.click_speed = -1
             logger.warning(
-                "Wrong values for click speed, use diffrent values, this warning is safe."
+                "Wrong values for click speed, use different values, this warning is safe."
             )
         try:
             self.click_timer = (
@@ -385,7 +385,7 @@ class MainWindow(QMainWindow):
         except ValueError:
             self.click_timer = -1
             logger.warning(
-                "Wrong values for click timer, use diffrent values, this warning is safe."
+                "Wrong values for click timer, use different values, this warning is safe."
             )
         try:
             self.click_hold = (
@@ -397,7 +397,7 @@ class MainWindow(QMainWindow):
         except ValueError:
             self.click_hold = -1
             logger.warning(
-                "Wrong values for click hold, use diffrent values, this warning is safe."
+                "Wrong values for click hold, use different values, this warning is safe."
             )
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
         self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
