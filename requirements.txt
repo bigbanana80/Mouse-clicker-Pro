@@ -51,7 +51,7 @@ requests==2.31.0
 setuptools==69.5.1
 shiboken6==6.7.0
 six==1.16.0
-urllib3==2.2.1
+urllib3==2.2.2
 whichcraft==0.6.1
 win32-setctime==1.1.0
 zope.event==5.0
