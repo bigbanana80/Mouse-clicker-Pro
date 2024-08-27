@@ -49,10 +49,6 @@ def validate_settings():
             config["shortcuts"] = {"Activate-key": "F6", "Stop-key": "F6"}
             config.write(file)
 validate_settings()
-# ? loading settings
-import configparser
-
-SETTINGS = configparser.ConfigParser()
 
 # ? replace this during build time with import pyautogui, its just there to get rid of the annoying error that the user will never see
 from unittest.mock import patch
@@ -65,8 +61,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        config = configparser.ConfigParser()
-        config.read("settings.ini")
+        self.config = configparser.ConfigParser()
+        self.config.read("settings.ini")
         
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
@@ -95,22 +91,22 @@ class MainWindow(QMainWindow):
         logger.info("thread successfully initiated.")
 
         # & startup tasks
-        self.ui.le_hours.setText(config['interval']['hour'])
-        self.ui.le_mins.setText(config['interval']['minute'])
-        self.ui.le_s.setText(config['interval']['second'])
-        self.ui.le_ms.setText(config['interval']['milliseconds'])
+        self.ui.le_hours.setText(self.config['interval']['hour'])
+        self.ui.le_mins.setText(self.config['interval']['minute'])
+        self.ui.le_s.setText(self.config['interval']['second'])
+        self.ui.le_ms.setText(self.config['interval']['milliseconds'])
 
-        self.ui.le_timer_h.setText(config['timer']['hour'])
-        self.ui.le_timer_min.setText(config['timer']['minute'])
-        self.ui.le_timer_s.setText(config['timer']['second'])
-        self.ui.le_timer_ms.setText(config['timer']['milliseconds'])
+        self.ui.le_timer_h.setText(self.config['timer']['hour'])
+        self.ui.le_timer_min.setText(self.config['timer']['minute'])
+        self.ui.le_timer_s.setText(self.config['timer']['second'])
+        self.ui.le_timer_ms.setText(self.config['timer']['milliseconds'])
 
-        self.ui.le_hold_hours.setText(config['holdTime']['hour'])
-        self.ui.le_hold_mins.setText(config['holdTime']['minute'])
-        self.ui.le_hold_s.setText(config['holdTime']['second'])
-        self.ui.le_hold_ms.setText(config['holdTime']['milliseconds'])
+        self.ui.le_hold_hours.setText(self.config['holdTime']['hour'])
+        self.ui.le_hold_mins.setText(self.config['holdTime']['minute'])
+        self.ui.le_hold_s.setText(self.config['holdTime']['second'])
+        self.ui.le_hold_ms.setText(self.config['holdTime']['milliseconds'])
 
-        self.ui.repeat_times.setValue(int(config["repeat"]["repeat-times"]))
+        self.ui.repeat_times.setValue(int(self.config["repeat"]["repeat-times"]))
 
         self.update_vars()  # ? runs once to update properly
 
@@ -143,9 +139,10 @@ class MainWindow(QMainWindow):
         self.ui.btn_shortcut.clicked.connect(self.shortcut_change)
         self.ui.btn_help.clicked.connect(self.help_func)
 
-        self.shortcut_start_stop = config["shortcuts"]["activate-key"]
+        self.shortcut_start_stop = self.config["shortcuts"]["activate-key"]
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
-
+        self.ui.btn_start.setText(f"Start({self.shortcut_start_stop})")
+        self.ui.btn_stop.setText(f"Stop({self.shortcut_start_stop})")
         logger.info("initiation complete.")
 
     def help_func(self):
@@ -237,6 +234,9 @@ class MainWindow(QMainWindow):
             self.ui.btn_start.setText(f"Start({self.shortcut_start_stop})")
             self.ui.btn_stop.setText(f"Stop({self.shortcut_start_stop})")
             self.ui.btn_shortcut.setText(f"New Hotkey is ({self.shortcut_start_stop})")
+            self.config["shortcuts"]["activate-key"] = self.shortcut_start_stop
+            with open(SETTINGS, "w") as f:
+                self.config.write(f)
             return False
 
         # Collect events until released
@@ -412,6 +412,13 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_s.text())
                 + int(self.ui.le_ms.text()) / 1000
             )
+            self.config['interval']['hour'] = self.ui.le_hours.text()
+            self.config['interval']['minute'] = self.ui.le_mins.text()
+            self.config['interval']['second'] = self.ui.le_s.text()
+            self.config['interval']['milliseconds'] = self.ui.le_ms.text()
+            with open(SETTINGS , "w") as f:
+                self.config.write(f)
+            
         except ValueError:
             self.click_speed = -1
             logger.warning(
@@ -424,6 +431,13 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_timer_s.text())
                 + int(self.ui.le_timer_ms.text()) / 1000
             )
+            self.config['timer']['hour'] = self.ui.le_timer_h.text()
+            self.config['timer']['minute'] = self.ui.le_timer_min.text()
+            self.config['timer']['second'] = self.ui.le_timer_s.text()
+            self.config['timer']['milliseconds'] = self.ui.le_timer_ms.text()
+            with open(SETTINGS , "w") as f:
+                self.config.write(f)
+                
         except ValueError:
             self.click_timer = -1
             logger.warning(
@@ -436,12 +450,22 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_hold_s.text())
                 + int(self.ui.le_hold_ms.text()) / 1000
             )
+            self.config['holdTime']['hour'] = self.ui.le_hold_hours.text()
+            self.config['holdTime']['minute'] = self.ui.le_hold_mins.text()
+            self.config['holdTime']['second'] = self.ui.le_hold_s.text()
+            self.config['holdTime']['milliseconds'] = self.ui.le_hold_ms.text()
+            with open(SETTINGS , "w") as f:
+                self.config.write(f)
+                
         except ValueError:
             self.click_hold = -1
             logger.warning(
                 "Wrong values for click hold, use different values, this warning is safe."
             )
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
+        self.config["repeat"]["repeat-times"] = str(self.click_repeat)
+        with open(SETTINGS , "w") as f:
+            self.config.write(f)
         self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
 
     def repeat_opt(self):
