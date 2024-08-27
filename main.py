@@ -16,6 +16,42 @@ import keyboard
 import pynput
 import ctypes
 
+# ? checks if setting.ini exist, if not make it
+import configparser
+SETTINGS = "settings.ini"
+if not os.path.exists(SETTINGS):
+    with open(SETTINGS, "w") as file:
+        config = configparser.ConfigParser()
+
+        config["interval"] = {
+            "i-hour": "0",
+            "i-minute": "0",
+            "i-second": "0",
+            "i-milliseconds": "100",
+        }
+        config["holdTime"] = {
+            "ht-hour": "0",
+            "ht-minute": "0",
+            "ht-second": "0",
+            "ht-milliseconds": "0",
+        }
+        config["timer"] = {
+            "t-hour": "0",
+            "t-minute": "0",
+            "t-second": "0",
+            "t-milliseconds": "0",
+        }
+        config["settings"] = {"Mouse-btn": "Left", "Click-type": "Single"}
+        config["repeat"] = {"repeat-times": "0", "repeat-type": "2"}
+        config["position"] = {"pos-type": "1", "pos-x": "0", "pos-y": "0"}
+        config["shortcuts"] = {"Activate-key": "F6", "Stop-key": "F6"}
+        config.write(file)
+
+# ? loading settings
+import configparser
+
+SETTINGS = configparser.ConfigParser()
+
 # ? replace this during build time with import pyautogui, its just there to get rid of the annoying error that the user will never see
 from unittest.mock import patch
 
@@ -48,7 +84,9 @@ class MainWindow(QMainWindow):
         self.MOUSE_EVENT_WHEEL = 0x0800  # wheel button rolled
         self.MOUSE_EVENT_ABSOLUTE = 0x8000  # absolute move
 
-        self.__stop_threads = True  # ? start and stop buttons depends on this. True means it will stop
+        self.__stop_threads = (
+            True  # ? start and stop buttons depends on this. True means it will stop
+        )
         logger.info("thread successfully initiated.")
 
         # & startup tasks
@@ -237,7 +275,6 @@ class MainWindow(QMainWindow):
                 logger.info("Auto Clicker ended")
                 break
         logger.info("Auto Clicker finished.(alt)")
-        
 
     def click_inf(self, hold_time, delay, timer):
         if self.ui.alt_clk_checkbox.isChecked():
