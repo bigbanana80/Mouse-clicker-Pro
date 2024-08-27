@@ -16,37 +16,39 @@ import keyboard
 import pynput
 import ctypes
 
-# ? checks if setting.ini exist, if not make it
 import configparser
 SETTINGS = "settings.ini"
-if not os.path.exists(SETTINGS):
-    with open(SETTINGS, "w") as file:
-        config = configparser.ConfigParser()
 
-        config["interval"] = {
-            "i-hour": "0",
-            "i-minute": "0",
-            "i-second": "0",
-            "i-milliseconds": "100",
-        }
-        config["holdTime"] = {
-            "ht-hour": "0",
-            "ht-minute": "0",
-            "ht-second": "0",
-            "ht-milliseconds": "0",
-        }
-        config["timer"] = {
-            "t-hour": "0",
-            "t-minute": "0",
-            "t-second": "0",
-            "t-milliseconds": "0",
-        }
-        config["settings"] = {"Mouse-btn": "Left", "Click-type": "Single"}
-        config["repeat"] = {"repeat-times": "0", "repeat-type": "2"}
-        config["position"] = {"pos-type": "1", "pos-x": "0", "pos-y": "0"}
-        config["shortcuts"] = {"Activate-key": "F6", "Stop-key": "F6"}
-        config.write(file)
+def validate_settings():
+    # ? checks if setting.ini exist, if not make it with default settings
+    if not os.path.exists(SETTINGS):
+        with open(SETTINGS, "w") as file:
+            config = configparser.ConfigParser()
 
+            config["interval"] = {
+                "hour": "0",
+                "minute": "0",
+                "second": "0",
+                "milliseconds": "100",
+            }
+            config["holdTime"] = {
+                "hour": "0",
+                "minute": "0",
+                "second": "0",
+                "milliseconds": "0",
+            }
+            config["timer"] = {
+                "hour": "0",
+                "minute": "0",
+                "second": "0",
+                "milliseconds": "0",
+            }
+            config["settings"] = {"Mouse-btn": "Left", "Click-type": "Single"}
+            config["repeat"] = {"repeat-times": "0", "repeat-type": "2"}
+            config["position"] = {"pos-type": "1", "pos-x": "0", "pos-y": "0"}
+            config["shortcuts"] = {"Activate-key": "F6", "Stop-key": "F6"}
+            config.write(file)
+validate_settings()
 # ? loading settings
 import configparser
 
@@ -63,6 +65,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        config = configparser.ConfigParser()
+        config.read("settings.ini")
+        
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
@@ -90,22 +95,22 @@ class MainWindow(QMainWindow):
         logger.info("thread successfully initiated.")
 
         # & startup tasks
-        self.ui.le_hours.setText("0")
-        self.ui.le_mins.setText("0")
-        self.ui.le_s.setText("0")
-        self.ui.le_ms.setText("100")
+        self.ui.le_hours.setText(config['interval']['hour'])
+        self.ui.le_mins.setText(config['interval']['minute'])
+        self.ui.le_s.setText(config['interval']['second'])
+        self.ui.le_ms.setText(config['interval']['milliseconds'])
 
-        self.ui.le_timer_h.setText("0")
-        self.ui.le_timer_min.setText("0")
-        self.ui.le_timer_s.setText("0")
-        self.ui.le_timer_ms.setText("0")
+        self.ui.le_timer_h.setText(config['timer']['hour'])
+        self.ui.le_timer_min.setText(config['timer']['minute'])
+        self.ui.le_timer_s.setText(config['timer']['second'])
+        self.ui.le_timer_ms.setText(config['timer']['milliseconds'])
 
-        self.ui.le_hold_hours.setText("0")
-        self.ui.le_hold_mins.setText("0")
-        self.ui.le_hold_s.setText("0")
-        self.ui.le_hold_ms.setText("0")
+        self.ui.le_hold_hours.setText(config['holdTime']['hour'])
+        self.ui.le_hold_mins.setText(config['holdTime']['minute'])
+        self.ui.le_hold_s.setText(config['holdTime']['second'])
+        self.ui.le_hold_ms.setText(config['holdTime']['milliseconds'])
 
-        self.ui.repeat_times.setValue(0)
+        self.ui.repeat_times.setValue(int(config["repeat"]["repeat-times"]))
 
         self.update_vars()  # ? runs once to update properly
 
@@ -138,7 +143,7 @@ class MainWindow(QMainWindow):
         self.ui.btn_shortcut.clicked.connect(self.shortcut_change)
         self.ui.btn_help.clicked.connect(self.help_func)
 
-        self.shortcut_start_stop = "F6"
+        self.shortcut_start_stop = config["shortcuts"]["activate-key"]
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
 
         logger.info("initiation complete.")
