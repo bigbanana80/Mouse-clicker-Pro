@@ -15,6 +15,6 @@ just like OP Auto Clicker it has a minimalistic interface with not so much distr
 
 ## RoadMap ✅
 
-- [ ] Tray icon so it stays on while hidden
+- [x] ~~Tray icon so it stays on while hidden~~
 - [x] ~~Retaining settings when closing the app (a settings.json file probably)~~
 - [ ] a more efficient click speed to achieve higher than 1000cps speed ( already experimenting with C code)
