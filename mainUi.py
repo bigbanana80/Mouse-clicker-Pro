@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainui.ui'
+## Form generated from reading UI file 'mainUi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.0
 ##
@@ -109,6 +109,11 @@ class Ui_main_window(object):
         self.alt_clk_checkbox.setObjectName(u"alt_clk_checkbox")
 
         self.gridLayout.addWidget(self.alt_clk_checkbox, 0, 0, 1, 1)
+
+        self.tray_icon_visible = QCheckBox(self.grb_clk_settings)
+        self.tray_icon_visible.setObjectName(u"tray_icon_visible")
+
+        self.gridLayout.addWidget(self.tray_icon_visible, 0, 1, 1, 1)
 
         self.grb_cur_pos = QGroupBox(self.central_widget)
         self.grb_cur_pos.setObjectName(u"grb_cur_pos")
@@ -349,6 +354,7 @@ class Ui_main_window(object):
         self.alt_clk_checkbox.setWhatsThis(QCoreApplication.translate("main_window", u"<html><head/><body><p>This will use an alternative way to click, its significantly slower than the default way but the default way does not work on some apps</p></body></html>", None))
 #endif // QT_CONFIG(whatsthis)
         self.alt_clk_checkbox.setText(QCoreApplication.translate("main_window", u"Alt Click type", None))
+        self.tray_icon_visible.setText(QCoreApplication.translate("main_window", u"Tray Icon", None))
 #if QT_CONFIG(tooltip)
         self.grb_cur_pos.setToolTip(QCoreApplication.translate("main_window", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"

@@ -4,8 +4,8 @@ import os
 import pathlib
 
 from PySide6 import QtCore
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox , QSystemTrayIcon, QMenu
+from PySide6.QtGui import QIcon, QPixmap , QAction
 
 from mainUi import Ui_main_window
 
@@ -69,7 +69,8 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
         self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint, False)
         self.timer = QtCore.QTimer()
-        my_pixmap = QPixmap("icon.ico")
+        self.icon_name = "icon.ico"
+        my_pixmap = QPixmap(self.icon_name)
         self.my_icon = QIcon(my_pixmap)
         self.setWindowIcon(self.my_icon)
         logger.info("App successfully initiated.")
@@ -108,6 +109,9 @@ class MainWindow(QMainWindow):
 
         self.ui.repeat_times.setValue(int(self.config["repeat"]["repeat-times"]))
 
+        self.ui.tray_icon_visible.setChecked(bool(self.config.getboolean("checkbox", "tray_icon_visible")))
+        self.ui.alt_clk_checkbox.setChecked(bool(self.config.getboolean("checkbox", "alt_click")))
+        
         self.update_vars()  # ? runs once to update properly
 
         # & Connections
@@ -138,7 +142,32 @@ class MainWindow(QMainWindow):
         self.ui.btn_stop.clicked.connect(self.stop)
         self.ui.btn_shortcut.clicked.connect(self.shortcut_change)
         self.ui.btn_help.clicked.connect(self.help_func)
+        
+        self.ui.alt_clk_checkbox.clicked.connect(self.alt_clk_checkbox_function)
+        self.ui.tray_icon_visible.clicked.connect(self.tray_icon_visible_function)
+        # & Tray icon and functionality 
+        # Create the system tray icon
+        self.tray_icon =  QSystemTrayIcon(QIcon(self.icon_name), self)
 
+        # Create a context menu for the tray icon
+        self.tray_menu = QMenu()
+        self.restore_action = QAction("Open")
+        self.restore_action.triggered.connect(self.restore_window)
+        self.exit_action = QAction("Close")
+        self.exit_action.triggered.connect(self.exit_app)
+
+        self.tray_menu.addAction(self.restore_action)
+        self.tray_menu.addAction(self.exit_action)
+
+        self.tray_icon.setContextMenu(self.tray_menu)
+
+        # Connect the activated signal to a method
+        self.tray_icon.activated.connect(self.tray_icon_activated)
+        
+        if self.ui.tray_icon_visible.isChecked():
+            self.tray_icon.show()
+        
+        # & Final tasks which has to do with shortcut btn
         self.shortcut_start_stop = self.config["shortcuts"]["activate-key"]
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
         self.ui.btn_start.setText(f"Start({self.shortcut_start_stop})")
@@ -373,7 +402,7 @@ class MainWindow(QMainWindow):
 
             msg_box = QMessageBox()
             msg_box.setWindowTitle("Wrong Values")
-            msg_box.setWindowIcon(QIcon(QPixmap("icon.ico")))
+            msg_box.setWindowIcon(QIcon(QPixmap(self.icon_name)))
             msg_box.setIcon(QMessageBox.Warning)
             msg_box.setText(error_message)
             msg_box.exec()
@@ -483,7 +512,47 @@ class MainWindow(QMainWindow):
             self.ui.x_cor.setEnabled(False)
             self.ui.y_cor.setEnabled(False)
 
+    # & Tray Icon Functions-----
+    def closeEvent(self, event):
+        if self.ui.tray_icon_visible.isChecked():
+            # Minimize to tray instead of closing
+            event.ignore()  # Ignore the close event
+            self.hide()  # Hide the window
+        else:
+            event.accept()
 
+    def tray_icon_activated(self, reason):
+        if reason == QSystemTrayIcon.Trigger:
+            if self.isVisible():
+                self.hide()
+            else:
+                self.show()
+
+    def restore_window(self):
+        self.show()
+        self.activateWindow()
+
+    def exit_app(self):
+        # self.tray_icon.setVisible(False)  # Hide the tray icon
+        QApplication.quit()  # Exit the application
+    # & -------------------------
+    
+    # & Checkbox functions
+    def alt_clk_checkbox_function(self):
+        self.config["checkbox"]["alt_click"] = str(self.ui.alt_clk_checkbox.isChecked())
+        with open(SETTINGS , "w") as f:
+            self.config.write(f)
+        
+    def tray_icon_visible_function(self):
+        self.config["checkbox"]["tray_icon_visible"] = str(self.ui.tray_icon_visible.isChecked())
+        with open(SETTINGS , "w") as f:
+            self.config.write(f)
+        
+        if self.ui.tray_icon_visible.isChecked():
+            self.tray_icon.show()
+        else:
+            self.tray_icon.hide()
+                        
 def main() -> None:
 
     # ^ checking if essential folders exist or not, if not create them
