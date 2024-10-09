@@ -4,8 +4,14 @@ import os
 import pathlib
 
 from PySide6 import QtCore
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox , QSystemTrayIcon, QMenu
-from PySide6.QtGui import QIcon, QPixmap , QAction
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QMessageBox,
+    QSystemTrayIcon,
+    QMenu,
+)
+from PySide6.QtGui import QIcon, QPixmap, QAction
 
 from mainUi import Ui_main_window
 
@@ -17,7 +23,9 @@ import pynput
 import ctypes
 
 import configparser
+
 SETTINGS = "settings.ini"
+
 
 def validate_settings():
     # ? checks if setting.ini exist, if not make it with default settings
@@ -47,7 +55,13 @@ def validate_settings():
             config["repeat"] = {"repeat-times": "0", "repeat-type": "2"}
             config["position"] = {"pos-type": "1", "pos-x": "0", "pos-y": "0"}
             config["shortcuts"] = {"Activate-key": "F6", "Stop-key": "F6"}
+            config["checkbox"] = {
+                "tray_icon_visible": "False",
+                "alt_click": "False",
+            }
             config.write(file)
+
+
 validate_settings()
 
 # ? replace this during build time with import pyautogui, its just there to get rid of the annoying error that the user will never see
@@ -63,7 +77,7 @@ class MainWindow(QMainWindow):
 
         self.config = configparser.ConfigParser()
         self.config.read("settings.ini")
-        
+
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
@@ -92,26 +106,30 @@ class MainWindow(QMainWindow):
         logger.info("thread successfully initiated.")
 
         # & startup tasks
-        self.ui.le_hours.setText(self.config['interval']['hour'])
-        self.ui.le_mins.setText(self.config['interval']['minute'])
-        self.ui.le_s.setText(self.config['interval']['second'])
-        self.ui.le_ms.setText(self.config['interval']['milliseconds'])
+        self.ui.le_hours.setText(self.config["interval"]["hour"])
+        self.ui.le_mins.setText(self.config["interval"]["minute"])
+        self.ui.le_s.setText(self.config["interval"]["second"])
+        self.ui.le_ms.setText(self.config["interval"]["milliseconds"])
 
-        self.ui.le_timer_h.setText(self.config['timer']['hour'])
-        self.ui.le_timer_min.setText(self.config['timer']['minute'])
-        self.ui.le_timer_s.setText(self.config['timer']['second'])
-        self.ui.le_timer_ms.setText(self.config['timer']['milliseconds'])
+        self.ui.le_timer_h.setText(self.config["timer"]["hour"])
+        self.ui.le_timer_min.setText(self.config["timer"]["minute"])
+        self.ui.le_timer_s.setText(self.config["timer"]["second"])
+        self.ui.le_timer_ms.setText(self.config["timer"]["milliseconds"])
 
-        self.ui.le_hold_hours.setText(self.config['holdTime']['hour'])
-        self.ui.le_hold_mins.setText(self.config['holdTime']['minute'])
-        self.ui.le_hold_s.setText(self.config['holdTime']['second'])
-        self.ui.le_hold_ms.setText(self.config['holdTime']['milliseconds'])
+        self.ui.le_hold_hours.setText(self.config["holdTime"]["hour"])
+        self.ui.le_hold_mins.setText(self.config["holdTime"]["minute"])
+        self.ui.le_hold_s.setText(self.config["holdTime"]["second"])
+        self.ui.le_hold_ms.setText(self.config["holdTime"]["milliseconds"])
 
         self.ui.repeat_times.setValue(int(self.config["repeat"]["repeat-times"]))
 
-        self.ui.tray_icon_visible.setChecked(bool(self.config.getboolean("checkbox", "tray_icon_visible")))
-        self.ui.alt_clk_checkbox.setChecked(bool(self.config.getboolean("checkbox", "alt_click")))
-        
+        self.ui.tray_icon_visible.setChecked(
+            bool(self.config.getboolean("checkbox", "tray_icon_visible"))
+        )
+        self.ui.alt_clk_checkbox.setChecked(
+            bool(self.config.getboolean("checkbox", "alt_click"))
+        )
+
         self.update_vars()  # ? runs once to update properly
 
         # & Connections
@@ -142,12 +160,12 @@ class MainWindow(QMainWindow):
         self.ui.btn_stop.clicked.connect(self.stop)
         self.ui.btn_shortcut.clicked.connect(self.shortcut_change)
         self.ui.btn_help.clicked.connect(self.help_func)
-        
+
         self.ui.alt_clk_checkbox.clicked.connect(self.alt_clk_checkbox_function)
         self.ui.tray_icon_visible.clicked.connect(self.tray_icon_visible_function)
-        # & Tray icon and functionality 
+        # & Tray icon and functionality
         # Create the system tray icon
-        self.tray_icon =  QSystemTrayIcon(QIcon(self.icon_name), self)
+        self.tray_icon = QSystemTrayIcon(QIcon(self.icon_name), self)
 
         # Create a context menu for the tray icon
         self.tray_menu = QMenu()
@@ -163,10 +181,10 @@ class MainWindow(QMainWindow):
 
         # Connect the activated signal to a method
         self.tray_icon.activated.connect(self.tray_icon_activated)
-        
+
         if self.ui.tray_icon_visible.isChecked():
             self.tray_icon.show()
-        
+
         # & Final tasks which has to do with shortcut btn
         self.shortcut_start_stop = self.config["shortcuts"]["activate-key"]
         keyboard.add_hotkey(self.shortcut_start_stop, self.shortcut_func)
@@ -441,13 +459,13 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_s.text())
                 + int(self.ui.le_ms.text()) / 1000
             )
-            self.config['interval']['hour'] = self.ui.le_hours.text()
-            self.config['interval']['minute'] = self.ui.le_mins.text()
-            self.config['interval']['second'] = self.ui.le_s.text()
-            self.config['interval']['milliseconds'] = self.ui.le_ms.text()
-            with open(SETTINGS , "w") as f:
+            self.config["interval"]["hour"] = self.ui.le_hours.text()
+            self.config["interval"]["minute"] = self.ui.le_mins.text()
+            self.config["interval"]["second"] = self.ui.le_s.text()
+            self.config["interval"]["milliseconds"] = self.ui.le_ms.text()
+            with open(SETTINGS, "w") as f:
                 self.config.write(f)
-            
+
         except ValueError:
             self.click_speed = -1
             logger.warning(
@@ -460,13 +478,13 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_timer_s.text())
                 + int(self.ui.le_timer_ms.text()) / 1000
             )
-            self.config['timer']['hour'] = self.ui.le_timer_h.text()
-            self.config['timer']['minute'] = self.ui.le_timer_min.text()
-            self.config['timer']['second'] = self.ui.le_timer_s.text()
-            self.config['timer']['milliseconds'] = self.ui.le_timer_ms.text()
-            with open(SETTINGS , "w") as f:
+            self.config["timer"]["hour"] = self.ui.le_timer_h.text()
+            self.config["timer"]["minute"] = self.ui.le_timer_min.text()
+            self.config["timer"]["second"] = self.ui.le_timer_s.text()
+            self.config["timer"]["milliseconds"] = self.ui.le_timer_ms.text()
+            with open(SETTINGS, "w") as f:
                 self.config.write(f)
-                
+
         except ValueError:
             self.click_timer = -1
             logger.warning(
@@ -479,13 +497,13 @@ class MainWindow(QMainWindow):
                 + int(self.ui.le_hold_s.text())
                 + int(self.ui.le_hold_ms.text()) / 1000
             )
-            self.config['holdTime']['hour'] = self.ui.le_hold_hours.text()
-            self.config['holdTime']['minute'] = self.ui.le_hold_mins.text()
-            self.config['holdTime']['second'] = self.ui.le_hold_s.text()
-            self.config['holdTime']['milliseconds'] = self.ui.le_hold_ms.text()
-            with open(SETTINGS , "w") as f:
+            self.config["holdTime"]["hour"] = self.ui.le_hold_hours.text()
+            self.config["holdTime"]["minute"] = self.ui.le_hold_mins.text()
+            self.config["holdTime"]["second"] = self.ui.le_hold_s.text()
+            self.config["holdTime"]["milliseconds"] = self.ui.le_hold_ms.text()
+            with open(SETTINGS, "w") as f:
                 self.config.write(f)
-                
+
         except ValueError:
             self.click_hold = -1
             logger.warning(
@@ -493,7 +511,7 @@ class MainWindow(QMainWindow):
             )
         self.click_repeat = abs(int(self.ui.repeat_times.text()))
         self.config["repeat"]["repeat-times"] = str(self.click_repeat)
-        with open(SETTINGS , "w") as f:
+        with open(SETTINGS, "w") as f:
             self.config.write(f)
         self.click_type = {"Single": 1, "Double": 2, "Triple": 3}
 
@@ -535,24 +553,28 @@ class MainWindow(QMainWindow):
     def exit_app(self):
         # self.tray_icon.setVisible(False)  # Hide the tray icon
         QApplication.quit()  # Exit the application
+
     # & -------------------------
-    
+
     # & Checkbox functions
     def alt_clk_checkbox_function(self):
         self.config["checkbox"]["alt_click"] = str(self.ui.alt_clk_checkbox.isChecked())
-        with open(SETTINGS , "w") as f:
+        with open(SETTINGS, "w") as f:
             self.config.write(f)
-        
+
     def tray_icon_visible_function(self):
-        self.config["checkbox"]["tray_icon_visible"] = str(self.ui.tray_icon_visible.isChecked())
-        with open(SETTINGS , "w") as f:
+        self.config["checkbox"]["tray_icon_visible"] = str(
+            self.ui.tray_icon_visible.isChecked()
+        )
+        with open(SETTINGS, "w") as f:
             self.config.write(f)
-        
+
         if self.ui.tray_icon_visible.isChecked():
             self.tray_icon.show()
         else:
             self.tray_icon.hide()
-                        
+
+
 def main() -> None:
 
     # ^ checking if essential folders exist or not, if not create them
